@@ -1,6 +1,3 @@
-# Demo simulation test case scenario for OneDay Health
-# See LangWatch Scenario docs at https://scenario.langwatch.ai/introduction/getting-started
-
 # IMPORTANT: Add your OPENAI_API_KEY and LANGWATCH_API_KEY to your .env file
 
 import pytest
@@ -8,7 +5,7 @@ import scenario
 import litellm
 from dotenv import load_dotenv
 from typing import TypedDict
-
+from doc_to_scenarios import doc_to_scenarios
 load_dotenv()
 
 # Configure the default model for simulations
@@ -177,39 +174,47 @@ class OneDayAgentAdapter(scenario.AgentAdapter):
         return generate_oneday_agent_response(input.messages)
 
 
-TEST_SCENARIOS: list[TestScenario] = [
-    {
-        "case_number": 1,
-        "name": "4yo with cough and fever",
-        "description": """
-            The user is a nurse currently examining a 4 year old patient with one day of cough and fever.
-            Malaria test negative He's eating well and not vomiting.
-            If asked, child's respiratory rate is 65.
-            If asked, child has no chest indrawing or stridor.
+# Static test scenarios
+# STATIC_TEST_SCENARIOS: list[TestScenario] = [
+#     {
+#         "case_number": 1,
+#         "name": "4yo with cough and fever",
+#         "description": """
+#             The user is a nurse currently examining a 4 year old patient with one day of cough and fever.
+#             Malaria test negative He's eating well and not vomiting.
+#             If asked, child's respiratory rate is 65.
+#             If asked, child has no chest indrawing or stridor.
 
-            As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
-            Agent can make a diagnosis.
-        """,
-        "expected_diagnosis": None,
-    },
-    {
-        "case_number": 2,
-        "name": "30yo woman with typhoid",
-        "description": """
-            The user is a nurse currently examining a 30 year old woman patient has had fever for 5 days and has been sweating at night.
-            She has pain in her joints. She has no cough, no pain on urinating and no diarrhea. She does feel very weak.
-            If asked, say she has headache and loss of appetite
-            If asked, say she has done a malaria test and it's negative
-            If asked, blood pressure is <90
-            If asked, no vomiting
-            If asked, no blood in stool
+#             As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
+#             Agent can make a diagnosis.
+#         """,
+#         "expected_diagnosis": None,
+#     },
+#     {
+#         "case_number": 2,
+#         "name": "30yo woman with typhoid",
+#         "description": """
+#             The user is a nurse currently examining a 30 year old woman patient has had fever for 5 days and has been sweating at night.
+#             She has pain in her joints. She has no cough, no pain on urinating and no diarrhea. She does feel very weak.
+#             If asked, say she has headache and loss of appetite
+#             If asked, say she has done a malaria test and it's negative
+#             If asked, blood pressure is <90
+#             If asked, no vomiting
+#             If asked, no blood in stool
 
-            As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
-            Agent can make a diagnosis.
-        """,
-        "expected_diagnosis": "Treat and communicate as uncomplicated Typhoid fever",
-    },
-]
+#             As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
+#             Agent can make a diagnosis.
+#         """,
+#         "expected_diagnosis": "Treat and communicate as uncomplicated Typhoid fever",
+#     },
+# ]
+
+try:
+    doc_scenarios = doc_to_scenarios()
+    TEST_SCENARIOS: list[TestScenario] = doc_scenarios
+    print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
+except Exception as e:
+    print(f"⚠ Warning: Could not load scenarios from Google Doc: {e}")
 
 
 @pytest.mark.agent_test
@@ -241,7 +246,7 @@ async def test_oneday_agent(test_scenario: TestScenario):
             scenario.UserSimulatorAgent(),
             scenario.JudgeAgent(
                 criteria=criteria,
-                model="openai/gpt-4.1",
+                model="gpt5-mini",
                 system_prompt=oneday_judge_prompt(description, criteria)
             )
         ]

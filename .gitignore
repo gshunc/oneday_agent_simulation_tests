@@ -11,6 +11,9 @@ wheels/
 
 .env
 
-
 token.json
 credentials.json
+
+.pytest_cache/
+
+case_scenarios_cache.jsonl
