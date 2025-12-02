@@ -6,7 +6,7 @@ Tests case formatting, JSON validation, and caching functionality.
 import pytest
 import json
 import os
-from doc_to_scenarios import format_case, check_json, TestScenario
+from doc_extraction.doc_to_scenarios import format_case, check_json, Scenario
 from unittest.mock import patch, MagicMock
 
 
@@ -66,7 +66,7 @@ class TestCheckJson:
 class TestFormatCase:
     """Test the case formatting function"""
     
-    @patch('doc_to_scenarios.litellm.completion')
+    @patch('doc_extraction.doc_to_scenarios.litellm.completion')
     def test_format_case_returns_string(self, mock_completion):
         """Test that format_case returns a string"""
         mock_response = MagicMock()
@@ -78,7 +78,7 @@ class TestFormatCase:
         assert isinstance(result, str)
         assert mock_completion.called
     
-    @patch('doc_to_scenarios.litellm.completion')
+    @patch('doc_extraction.doc_to_scenarios.litellm.completion')
     def test_format_case_uses_system_prompt(self, mock_completion):
         """Test that format_case uses the system prompt"""
         mock_response = MagicMock()
@@ -177,11 +177,11 @@ class TestCachingSystem:
 class TestIntegration:
     """Integration tests for the full pipeline"""
     
-    @patch('doc_to_scenarios.extract_case_separated_docs')
-    @patch('doc_to_scenarios.format_case')
+    @patch('doc_extraction.doc_to_scenarios.extract_case_separated_docs')
+    @patch('doc_extraction.doc_to_scenarios.format_case')
     def test_pipeline_with_mock_llm(self, mock_format, mock_extract, tmp_path):
         """Test the full pipeline with mocked LLM calls"""
-        from doc_to_scenarios import doc_to_scenarios
+        from doc_extraction.doc_to_scenarios import doc_to_scenarios
         
         # Setup mocks
         mock_extract.return_value = [TEST_CASE_RAW]
@@ -209,6 +209,114 @@ class TestIntegration:
             assert len(scenarios2) == 1
             # Format should not be called again (loaded from cache)
             assert not mock_format.called
+            
+        finally:
+            os.chdir(original_dir)
+    
+    @patch('doc_extraction.doc_to_scenarios.extract_case_separated_docs')
+    @patch('doc_extraction.doc_to_scenarios.format_case')
+    def test_retry_logic_with_broken_json(self, mock_format, mock_extract, tmp_path, capsys):
+        """Test that retry logic works when JSON parsing fails then succeeds"""
+        from doc_extraction.doc_to_scenarios import doc_to_scenarios
+        
+        # Setup mocks
+        test_case_1 = "Case 1: Test patient with symptoms"
+        test_case_2 = "Case 2: Another test patient"
+        mock_extract.return_value = [test_case_1, test_case_2]
+        
+        # First case: broken JSON on first attempt, valid on second
+        # Second case: valid JSON on first attempt
+        call_count = [0]
+        def mock_format_side_effect(case):
+            call_count[0] += 1
+            if case == test_case_1:
+                # First attempt: return broken JSON
+                if call_count[0] == 1:
+                    return "{ this is broken json, missing quotes and colons }"
+                # Second attempt (retry): return valid JSON
+                else:
+                    return json.dumps({
+                        "case_number": 1,
+                        "name": "Retry test case",
+                        "description": "This should work on retry",
+                        "original_text": test_case_1,
+                        "expected_diagnosis": "Test diagnosis"
+                    })
+            else:
+                # Second case always returns valid JSON
+                return json.dumps({
+                    "case_number": 2,
+                    "name": "Working case",
+                    "description": "This works first time",
+                    "original_text": test_case_2,
+                    "expected_diagnosis": "Normal"
+                })
+        
+        mock_format.side_effect = mock_format_side_effect
+        
+        # Change to temp directory for cache file
+        original_dir = os.getcwd()
+        os.chdir(tmp_path)
+        
+        try:
+            # Run with 2 retries to allow for the broken JSON to be retried
+            scenarios = doc_to_scenarios(retries=2)
+            
+            # Verify both cases were processed successfully
+            assert len(scenarios) == 2
+            
+            # Check that the first case was retried and succeeded
+            case_1_scenario = [s for s in scenarios if s['case_number'] == 1][0]
+            assert case_1_scenario['name'] == "Retry test case"
+            
+            # Check that the second case succeeded first time
+            case_2_scenario = [s for s in scenarios if s['case_number'] == 2][0]
+            assert case_2_scenario['name'] == "Working case"
+            
+            # Verify warning message was printed for the failed attempt
+            captured = capsys.readouterr()
+            assert "Warning" in captured.out
+            assert "Failed to parse JSON" in captured.out
+            
+            # Verify format_case was called 3 times total:
+            # - First iteration: case_1 (fails), case_2 (succeeds)
+            # - Second iteration: case_1 (succeeds on retry)
+            assert mock_format.call_count == 3
+            
+        finally:
+            os.chdir(original_dir)
+    
+    @patch('doc_extraction.doc_to_scenarios.extract_case_separated_docs')
+    @patch('doc_extraction.doc_to_scenarios.format_case')
+    def test_all_retries_exhausted(self, mock_format, mock_extract, tmp_path, capsys):
+        """Test behavior when all retries fail (JSON never becomes valid)"""
+        from doc_extraction.doc_to_scenarios import doc_to_scenarios
+        
+        # Setup mocks
+        test_case = "Case 1: Always fails JSON parsing"
+        mock_extract.return_value = [test_case]
+        
+        # Always return broken JSON
+        mock_format.return_value = "{ broken json every time }"
+        
+        # Change to temp directory for cache file
+        original_dir = os.getcwd()
+        os.chdir(tmp_path)
+        
+        try:
+            # Run with 3 retries
+            scenarios = doc_to_scenarios(retries=3)
+            
+            # Should have 0 scenarios since all attempts failed
+            assert len(scenarios) == 0
+            
+            # Verify format_case was called 3 times (initial + 2 retries)
+            assert mock_format.call_count == 3
+            
+            # Verify warning messages were printed
+            captured = capsys.readouterr()
+            assert captured.out.count("Warning") == 3
+            assert captured.out.count("Failed to parse JSON") == 3
             
         finally:
             os.chdir(original_dir)

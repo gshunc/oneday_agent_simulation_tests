@@ -7,6 +7,7 @@ import litellm
 from dotenv import load_dotenv
 import json
 import os
+import re
 from typing import TypedDict
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -21,7 +22,7 @@ DOC_ID = os.getenv('DOC_ID')
 SCOPES = ['https://www.googleapis.com/auth/documents.readonly']
 
 
-class TestScenario(TypedDict):
+class Scenario(TypedDict):
     """Type definition for test scenario data"""
     case_number: int
     name: str
@@ -83,7 +84,6 @@ def get_document_body_text(doc_id: str) -> str:
     
     full_text = ''.join(text_parts)
     
-
     full_text = full_text.replace('\x0b', '')
     
     full_text = re.sub(r' +', ' ', full_text)
@@ -91,16 +91,33 @@ def get_document_body_text(doc_id: str) -> str:
     lines = full_text.split('\n')
     cleaned_lines = [line.strip() for line in lines if line.strip()]
     
-    return '\n'.join(cleaned_lines)
+    
+    return '\n'.join(cleaned_lines).lower()
 
 
-def extract_case_separated_docs() -> str:
+def extract_case_separated_docs() -> list[tuple[int, str]]:
     """
-    Extracts the docs file into a JSON file.
+    Extracts the docs file and returns a list of tuples (case_number, case_text).
+    Splits on 'case' followed by a number to avoid splitting on the word 'case' in descriptions.
     """
     doc_text = get_document_body_text(DOC_ID)
-    case_separated = doc_text.split("Case ")
+    
+    # Split by "case" followed by whitespace and a number (case-insensitive)
+    # The pattern captures the number so we can use it
+    parts = re.split(r'(?i)\bcase\s+(\d+)', doc_text)
+    
+    # parts[0] is text before first case (usually empty or header)
+    # parts[1] is the first case number, parts[2] is the first case text
+    # parts[3] is second case number, parts[4] is second case text, etc.
+    
+    case_separated = []
+    for i in range(1, len(parts), 2):
+        if i + 1 < len(parts):
+            case_num = int(parts[i])
+            case_text = parts[i + 1].strip()
+            case_separated.append((case_num, case_text))
+        
     return case_separated
 
 if __name__ == "__main__":
-    extract_case_separated_docs()
+    print(extract_case_separated_docs())

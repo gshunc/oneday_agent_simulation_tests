@@ -1,22 +1,21 @@
-# IMPORTANT: Add your OPENAI_API_KEY and LANGWATCH_API_KEY to your .env file
-
 import pytest
 import scenario
 import litellm
+litellm.drop_params = True  # Ignore params models don't support
 from dotenv import load_dotenv
 from typing import TypedDict
-from doc_to_scenarios import doc_to_scenarios
+from doc_extraction.doc_to_scenarios import doc_to_scenarios
 load_dotenv()
 
 # Configure the default model for simulations
 scenario.configure(
-    default_model="openai/gpt-4.1",
+    default_model="openai/gpt-5",
     max_turns=10,
-    verbose=True
+    verbose=True,
+    headless=True,  # Don't open browser tabs
 )
 
-
-class TestScenario(TypedDict):
+class Scenario(TypedDict):
     """Type definition for test scenario data"""
     case_number: int
     name: str
@@ -130,16 +129,18 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
 
       <one_day_guidelines>
       {oneday_guidelines()}
-      </one_day_guidelines
+      </one_day_guidelines>
 
       <goal>
       Your goal is to determine if you already have enough information to make a verdict of the scenario below, or if the conversation should continue for longer.
-      If you do have enough information, use the finish_test tool to determine if all the criteria have been met, if not, use the continue_test tool to let the next step play out.
+      If you do have enough information or it is clear that the test should continue based on the previous response and criteria, use the continue_test tool to continue the conversation. If you are certain that the agent has made a fatal mistake or alternatively has correctly, directly provided the diagnosis, use the finish_test tool to end the test.
+      We expect to see a full turn-by-turn conversation between the agent and the user. You should only end the test when you're unequivocally certain that the test needs to end and that the agent will never get to the right answer.
       </goal>
 
       <scenario>
       {scenario_description}
-      If the user doesn't follow the script, you should make not of this and report it as a failure.
+      If the user doesn't follow the script, you should make note of this and report it as a failure. 
+      It's very important that the agent asks all of the follow up questions until they have enough information to make the diagnosis. This means not prematurely ending the test!
       </scenario>
 
       <criteria>
@@ -147,8 +148,9 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       </criteria>
 
       <rules>
-      - Be strict, do not let the conversation continue if the agent already broke one of the "do not" or "should not" criterias.
-      - DO NOT make any judgment calls that are not explicitly listed in the success or failure criteria, withhold judgement if necessary
+      - DO NOT make any judgment calls that are not explicitly listed in the success or failure criteria, withhold judgement if necessary.
+      - Don't count the <EXPLANATION> tag as the diagnosis. You should not simply look at the words of the agent, but ensure that they agent actually directly provides a definitive diagnosis.
+      - Only award points for diagnonsis if the agent has correctly, directly provided the diagnosis.
       </rules>
     """
 
@@ -156,7 +158,7 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
 @scenario.cache()
 def generate_oneday_agent_response(messages) -> scenario.AgentReturnTypes:
     response = litellm.completion(
-        model="openai/gpt-4.1",
+        model="openai/gpt-5",
         messages=[
             {
                 "role": "system",
@@ -174,70 +176,34 @@ class OneDayAgentAdapter(scenario.AgentAdapter):
         return generate_oneday_agent_response(input.messages)
 
 
-# Static test scenarios
-# STATIC_TEST_SCENARIOS: list[TestScenario] = [
-#     {
-#         "case_number": 1,
-#         "name": "4yo with cough and fever",
-#         "description": """
-#             The user is a nurse currently examining a 4 year old patient with one day of cough and fever.
-#             Malaria test negative He's eating well and not vomiting.
-#             If asked, child's respiratory rate is 65.
-#             If asked, child has no chest indrawing or stridor.
+doc_scenarios = doc_to_scenarios()
+TEST_SCENARIOS: list[Scenario] = doc_scenarios
+print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
 
-#             As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
-#             Agent can make a diagnosis.
-#         """,
-#         "expected_diagnosis": None,
-#     },
-#     {
-#         "case_number": 2,
-#         "name": "30yo woman with typhoid",
-#         "description": """
-#             The user is a nurse currently examining a 30 year old woman patient has had fever for 5 days and has been sweating at night.
-#             She has pain in her joints. She has no cough, no pain on urinating and no diarrhea. She does feel very weak.
-#             If asked, say she has headache and loss of appetite
-#             If asked, say she has done a malaria test and it's negative
-#             If asked, blood pressure is <90
-#             If asked, no vomiting
-#             If asked, no blood in stool
+async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, strict: bool = False):
+    """
+    Shared helper that runs a OneDay agent scenario test.
 
-#             As the nurse, you need to describe the patient to the Agent and answer to any followup questions so that the
-#             Agent can make a diagnosis.
-#         """,
-#         "expected_diagnosis": "Treat and communicate as uncomplicated Typhoid fever",
-#     },
-# ]
-
-try:
-    doc_scenarios = doc_to_scenarios()
-    TEST_SCENARIOS: list[TestScenario] = doc_scenarios
-    print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
-except Exception as e:
-    print(f"⚠ Warning: Could not load scenarios from Google Doc: {e}")
-
-
-@pytest.mark.agent_test
-@pytest.mark.asyncio
-@pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}_{s['name'].replace(' ', '_')}")
-async def test_oneday_agent(test_scenario: TestScenario):
-    """Standard test for OneDay agent diagnostic scenarios"""
-    
+    Args:
+        test_scenario: The scenario data containing description, expected diagnosis, etc.
+        testrun_uid: Unique identifier for the test run.
+        strict: If True, adds criteria requiring correct follow-up questions.
+    """
     description = test_scenario["description"]
     expected_diagnosis = test_scenario["expected_diagnosis"]
     test_name = test_scenario["name"]
-    
+
     criteria = [
         "Agent provides accurate information closely following the OneDay medical guidelines",
         "Agent doesn't ask for the same information multiple times",
-        "Agent asks correct follow-up questions according to the OneDay medical guidelines",
     ]
-    
+
+    if strict:
+        criteria.append("Agent asks correct follow-up questions according to the OneDay medical guidelines")
+
     if expected_diagnosis:
         criteria.append(f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}")
-    else:
-        criteria.append("Agent provides a diagnosis that strictly follows the OneDay medical guidelines")
-    
+
     result = await scenario.run(
         name=f"OneDay - {test_name}",
         description=description,
@@ -246,10 +212,30 @@ async def test_oneday_agent(test_scenario: TestScenario):
             scenario.UserSimulatorAgent(),
             scenario.JudgeAgent(
                 criteria=criteria,
-                model="gpt5-mini",
+                model="gpt-5",
                 system_prompt=oneday_judge_prompt(description, criteria)
             )
-        ]
+        ],
+        set_id=testrun_uid
     )
-    
+
     assert result.success
+
+
+@pytest.mark.agent_test
+@pytest.mark.asyncio
+@pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
+async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str):
+    """Standard test for OneDay agent diagnostic scenarios"""
+    await run_oneday_scenario(test_scenario, testrun_uid, strict=False)
+
+
+@pytest.mark.agent_test
+@pytest.mark.asyncio
+@pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
+async def test_oneday_agent_strict(test_scenario: Scenario, testrun_uid: str):
+    """
+    Strict test for OneDay agent diagnostic scenarios.
+    Requires the agent to ask exactly the follow-up questions specified in the scenario and guidelines.
+    """
+    await run_oneday_scenario(test_scenario, testrun_uid, strict=True)

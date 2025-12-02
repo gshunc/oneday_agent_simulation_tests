@@ -1,11 +1,19 @@
 [project]
 name = "oneday-simulation"
 version = "0.1.0"
-description = "Add your description here"
+description = "OneDay agent simulation tests using LangWatch Scenario"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "langwatch-scenario>=0.7.13",
     "pytest>=8.4.2",
+    "pytest-asyncio>=0.26.0",
     "python-dotenv>=1.1.1",
+    "litellm>=1.0.0",
+    "requests>=2.31.0",
+    "google-auth>=2.0.0",
+    "google-auth-oauthlib>=1.0.0",
+    "google-auth-httplib2>=0.1.0",
+    "google-api-python-client>=2.0.0",
+    "pytest-xdist>=3.8.0",
 ]
