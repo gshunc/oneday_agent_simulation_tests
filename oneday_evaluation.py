@@ -7,14 +7,6 @@ from typing import TypedDict
 from doc_extraction.doc_to_scenarios import doc_to_scenarios
 load_dotenv()
 
-# Configure the default model for simulations
-scenario.configure(
-    default_model="openai/gpt-5",
-    max_turns=10,
-    verbose=True,
-    headless=True,  # Don't open browser tabs
-)
-
 class Scenario(TypedDict):
     """Type definition for test scenario data"""
     case_number: int
@@ -156,9 +148,9 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
 
 
 @scenario.cache()
-def generate_oneday_agent_response(messages) -> scenario.AgentReturnTypes:
+def generate_oneday_agent_response(messages, model: str) -> scenario.AgentReturnTypes:
     response = litellm.completion(
-        model="openai/gpt-5",
+        model=model,
         messages=[
             {
                 "role": "system",
@@ -172,21 +164,25 @@ def generate_oneday_agent_response(messages) -> scenario.AgentReturnTypes:
 
 class OneDayAgentAdapter(scenario.AgentAdapter):
     """Provides the scenario agent adapter for the OneDay workflow"""
+    def __init__(self, model: str):
+        self.model = model
+
     async def call(self, input: scenario.AgentInput) -> scenario.AgentReturnTypes:
-        return generate_oneday_agent_response(input.messages)
+        return generate_oneday_agent_response(input.messages, self.model)
 
 
 doc_scenarios = doc_to_scenarios()
 TEST_SCENARIOS: list[Scenario] = doc_scenarios
 print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
 
-async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, strict: bool = False):
+async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, strict: bool = False):
     """
     Shared helper that runs a OneDay agent scenario test.
 
     Args:
         test_scenario: The scenario data containing description, expected diagnosis, etc.
         testrun_uid: Unique identifier for the test run.
+        model_id: The litellm model ID to use for the agent.
         strict: If True, adds criteria requiring correct follow-up questions.
     """
     description = test_scenario["description"]
@@ -208,7 +204,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, strict:
         name=f"OneDay - {test_name}",
         description=description,
         agents=[
-            OneDayAgentAdapter(),
+            OneDayAgentAdapter(model_id),
             scenario.UserSimulatorAgent(),
             scenario.JudgeAgent(
                 criteria=criteria,
@@ -225,17 +221,17 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, strict:
 @pytest.mark.agent_test
 @pytest.mark.asyncio
 @pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
-async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str):
+async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str, model_id: str):
     """Standard test for OneDay agent diagnostic scenarios"""
-    await run_oneday_scenario(test_scenario, testrun_uid, strict=False)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id, strict=False)
 
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
 @pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
-async def test_oneday_agent_strict(test_scenario: Scenario, testrun_uid: str):
+async def test_oneday_agent_strict(test_scenario: Scenario, testrun_uid: str, model_id: str):
     """
     Strict test for OneDay agent diagnostic scenarios.
     Requires the agent to ask exactly the follow-up questions specified in the scenario and guidelines.
     """
-    await run_oneday_scenario(test_scenario, testrun_uid, strict=True)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id, strict=True)

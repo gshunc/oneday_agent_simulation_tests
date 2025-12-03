@@ -17,3 +17,11 @@ dependencies = [
     "google-api-python-client>=2.0.0",
     "pytest-xdist>=3.8.0",
 ]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["."]
+addopts = "--tb=no -W ignore"  # No tracebacks, suppress warnings (results in dashboard)
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
