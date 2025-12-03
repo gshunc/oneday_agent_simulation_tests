@@ -2,6 +2,31 @@
 
 This project runs automated tests that simulate conversations between a nurse and the OneDay diagnostic AI agent. The tests verify that the agent correctly follows medical guidelines and provides accurate diagnoses.
 
+---
+
+## 🚀 Web UI (Easiest Way to Run Tests)
+
+A local web interface is available for running tests without using the command line.
+
+**To start:**
+
+```bash
+cd web
+npm install   # First time only
+npm run dev
+```
+
+Then open **http://localhost:3000** in your browser.
+
+The web UI lets you:
+- Select which AI model to test
+- Enter API keys directly (no `.env` file needed)
+- Watch test progress in real-time
+- View results in a formatted table
+- Link directly to the LangWatch dashboard
+
+---
+
 ## What This Does
 
 The tests simulate realistic nurse-agent conversations where:
@@ -180,6 +205,9 @@ For detailed results including full conversation transcripts:
 ## Project Structure
 
 ```
+├── web/                    # Web UI for running tests
+│   ├── app/                # Next.js app
+│   └── package.json
 ├── oneday_evaluation.py    # Main test file
 ├── conftest.py             # Test configuration
 ├── oneday_guidelines.md    # Medical guidelines the agent follows

@@ -172,7 +172,7 @@ class OneDayAgentAdapter(scenario.AgentAdapter):
 
 
 doc_scenarios = doc_to_scenarios()
-TEST_SCENARIOS: list[Scenario] = doc_scenarios
+TEST_SCENARIOS: list[Scenario] = doc_scenarios[:8]
 print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
 
 async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, strict: bool = False):

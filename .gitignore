@@ -19,3 +19,7 @@ credentials.json
 case_scenarios_cache.jsonl
 
 uv.lock
+
+web/node_modules/
+
+web/.next/
