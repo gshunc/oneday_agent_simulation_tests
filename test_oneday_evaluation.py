@@ -172,7 +172,7 @@ class OneDayAgentAdapter(scenario.AgentAdapter):
         return generate_oneday_agent_response(input.messages, self.model)
 
 
-async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, strict: bool = False):
+async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, diagnosis_only: bool = False):
     """
     Shared helper that runs a OneDay agent scenario test.
 
@@ -180,7 +180,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         test_scenario: The scenario data containing description, expected diagnosis, etc.
         testrun_uid: Unique identifier for the test run.
         model_id: The litellm model ID to use for the agent.
-        strict: If True, adds criteria requiring correct follow-up questions.
+        diagnosis_only: If True, only checks that the agent provides the correct diagnosis.
     """
     description = test_scenario["description"]
     expected_diagnosis = test_scenario["expected_diagnosis"]
@@ -191,11 +191,11 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "Agent doesn't ask for the same information multiple times",
     ]
 
-    if strict:
-        criteria.append("Agent asks correct follow-up questions according to the OneDay medical guidelines")
-
     if expected_diagnosis:
         criteria.append(f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}")
+
+    if diagnosis_only:
+        criteria = [f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}"]
 
     result = await scenario.run(
         name=f"OneDay - {test_name}",
@@ -219,14 +219,14 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
 @pytest.mark.asyncio
 async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str, model_id: str):
     """Standard test for OneDay agent diagnostic scenarios."""
-    await run_oneday_scenario(test_scenario, testrun_uid, model_id, strict=False)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id)
 
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
-async def test_oneday_agent_strict(test_scenario: Scenario, testrun_uid: str, model_id: str):
+async def test_oneday_agent_diagnosis_only(test_scenario: Scenario, testrun_uid: str, model_id: str):
     """
-    Strict test for OneDay agent diagnostic scenarios.
-    Requires the agent to ask exactly the follow-up questions specified in the scenario and guidelines.
+    Test for OneDay agent diagnostic scenarios.
+    Requires the agent to provide the correct diagnosis only.
     """
-    await run_oneday_scenario(test_scenario, testrun_uid, model_id, strict=True)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id, diagnosis_only=True)

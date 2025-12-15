@@ -41,6 +41,18 @@ def system_prompt() -> str:
     Important: 
     - description should fix grammar/punctuation but preserve all medical details
     - Use "NURSE_RESPONSE:" format in AGENT_QUESTIONS section
+    - Sometimes the case will be given in a format this like as follows:
+    <CASE>
+    Case 12
+    A 4 year old child with loose mucoid diarrhoea for 5days, fever 2  days, and abdominal cramps is drinking eagerly. Temperature 38.2 degree respiration 42 breath per minute no cough and flu no abdominal tenderness.
+    Questions
+    - Any danger sign (no)
+    - Any other sign of dehydration (no)
+    - Malaria test (negative)
+    - Blood in the stool (yes)
+    Answer: communicate and treat with ciprofloxacin page 9
+    </CASE>
+    In this case, where we just see Answer and the word diagnosis is not present, you should extract the diagnosis from the Answer line.
 
     Here is an example of a test scenario, unformatted, and the JSON that should be returned:
     <CASE>

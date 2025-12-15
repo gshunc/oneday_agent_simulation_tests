@@ -2,7 +2,6 @@
 pytest configuration for OneDay agent testing with pytest-xdist support.
 
 Uses pytest hooks to share testrun_uid across parallel workers, with separate
-UIDs for standard and strict test variants.
 
 Doc extraction runs ONCE in the main process and scenarios are passed to workers
 to avoid redundant API calls and cache race conditions.
@@ -15,7 +14,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 
-# Store results per variant (standard/strict)
+# Store results per variant
 _test_results = defaultdict(list)
 _test_metadata = {}
 
@@ -76,11 +75,11 @@ def pytest_configure_node(node):
 def pytest_runtest_logreport(report):
     """Collect test results as they complete."""
     if report.when == "call":
-        # Extract variant (standard/strict) and case number from test name
+        # Extract variant and case number from test name
         test_name = report.nodeid
 
-        if "strict" in test_name:
-            variant = "strict"
+        if "diagnosis_only" in test_name:
+            variant = "diagnosis_only"
         elif "standard" in test_name:
             variant = "standard"
         else:
@@ -113,7 +112,7 @@ def pytest_sessionfinish(session, exitstatus):
     print(f"  Model: {model}  |  Time: {timestamp}")
     print(separator)
 
-    for variant in ["standard", "strict"]:
+    for variant in ["standard", "diagnosis_only"]:
         results = _test_results.get(variant, [])
         if not results:
             continue
@@ -182,10 +181,10 @@ def configure_scenario(model_id):
 @pytest.fixture(scope="function")
 def testrun_uid(request):
     """
-    Generate test run UID that's unique per test variant (standard vs strict).
+    Generate test run UID that's unique per test variant.
 
-    Standard and strict tests get different UIDs so they appear as separate
-    runs in LangWatch, but all tests of the same variant share the same UID.
+    Standard and diagnosis_only tests get different UIDs so they appear
+    as separate runs in LangWatch, but all tests of the same variant share the same UID.
     """
     # Get base UID from config or worker input
     if hasattr(request.config, "workerinput"):
@@ -195,8 +194,8 @@ def testrun_uid(request):
 
     # Determine test variant from test function name
     test_name = request.node.name
-    if "strict" in test_name:
-        variant = "strict"
+    if "diagnosis_only" in test_name:
+        variant = "diagnosis_only"
     elif "standard" in test_name:
         variant = "standard"
     else:

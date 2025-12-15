@@ -19,6 +19,7 @@ npm run dev
 Then open **http://localhost:3000** in your browser.
 
 The web UI lets you:
+
 - Select which AI model to test
 - Enter API keys directly (no `.env` file needed)
 - Watch test progress in real-time
@@ -144,7 +145,7 @@ After tests complete, you'll see a summary like this:
   ----------------------------------------
   Passed: 7  |  Failed: 1  |  Skipped: 0
 
-  STRICT TESTS (6/8 passed)
+  DIAGNOSIS ONLY TESTS (6/8 passed)
   ----------------------------------------
     ...
 ════════════════════════════════════════════════════════════
@@ -152,8 +153,8 @@ After tests complete, you'll see a summary like this:
 
 ### Test Types
 
-- **Standard Tests**: Check that the agent provides correct diagnoses, regardless of the path taken to get there
-- **Strict Tests**: Also verify the agent asks the right follow-up questions strictly according to the OneDay guidelines
+- **Standard Tests**: Check that the agent provides correct diagnoses, regardless of the path taken to get there, along with not repeating information and following oneday guidelines
+- **Diagnosis Only Tests**: Simply checks that the agent provides the correct diagnosis, nothing else.
 
 ### LangWatch Dashboard
 
@@ -161,20 +162,20 @@ For detailed results including full conversation transcripts:
 
 1. Go to [langwatch.ai](https://langwatch.ai/)
 2. Log in to your account
-3. Find your test run by the timestamp (e.g., "oneday-gpt-5-mini-Dec03-1430Z-[strict/standard]")
+3. Find your test run by the timestamp (e.g., "oneday-gpt-5-mini-Dec03-1430Z-[diagnosis_only/standard]")
 
 ---
 
 ## Common Commands
 
-| What you want to do         | Command                             |
-| --------------------------- | ----------------------------------- |
-| Run all tests               | `uv run pytest -n auto`             |
-| Run only standard tests     | `uv run pytest -n auto -k standard` |
-| Run only strict tests       | `uv run pytest -n auto -k strict`   |
-| Run a specific case         | `uv run pytest -n auto -k case_3`   |
-| Run without parallelization | `uv run pytest`                     |
-| See detailed output         | `uv run pytest -n auto --tb=short`  |
+| What you want to do         | Command                                   |
+| --------------------------- | ----------------------------------------- |
+| Run all tests               | `uv run pytest -n auto`                   |
+| Run only standard tests     | `uv run pytest -n auto -k standard`       |
+| Run diagnosis_only tests    | `uv run pytest -n auto -k diagnosis_only` |
+| Run a specific case         | `uv run pytest -n auto -k case_3`         |
+| Run without parallelization | `uv run pytest`                           |
+| See detailed output         | `uv run pytest -n auto --tb=short`        |
 
 ---
 

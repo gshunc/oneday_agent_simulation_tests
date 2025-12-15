@@ -32,11 +32,22 @@ export async function POST(request: Request) {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
       };
 
-      sendEvent({ type: "output", line: `Starting tests with model: ${model}` });
+      sendEvent({
+        type: "output",
+        line: `Starting tests with model: ${model}`,
+      });
 
       const pytest = spawn(
         "uv",
-        ["run", "pytest", "-n", "auto", "--model", model, "oneday_evaluation.py"],
+        [
+          "run",
+          "pytest",
+          "-n",
+          "auto",
+          "--model",
+          model,
+          "oneday_evaluation.py",
+        ],
         {
           cwd: projectRoot,
           env,
@@ -57,7 +68,10 @@ export async function POST(request: Request) {
             sendEvent({ type: "output", line });
 
             // Look for LangWatch URL
-            if (line.includes("langwatch.ai") || line.includes("Follow it live")) {
+            if (
+              line.includes("langwatch.ai") ||
+              line.includes("Follow it live")
+            ) {
               const urlMatch = line.match(/https?:\/\/[^\s]+/);
               if (urlMatch) {
                 sendEvent({ type: "langwatch_url", url: urlMatch[0] });
@@ -114,12 +128,12 @@ export async function POST(request: Request) {
 function parseResults(output: string, model: string) {
   const results: {
     standard: { case: number; status: string }[];
-    strict: { case: number; status: string }[];
+    diagnosis_only: { case: number; status: string }[];
     model: string;
     timestamp: string;
   } = {
     standard: [],
-    strict: [],
+    diagnosis_only: [],
     model,
     timestamp: "",
   };
@@ -135,30 +149,42 @@ function parseResults(output: string, model: string) {
     /STANDARD TESTS[^\n]*\n[-\s]*\n([\s\S]*?)(?=\n\s*-{10,}|\n\s*Passed:)/
   );
   if (standardMatch) {
-    const caseMatches = standardMatch[1].matchAll(/Case\s+(\d+):\s*(✓ PASS|✗ FAIL|○ SKIP)/g);
+    const caseMatches = standardMatch[1].matchAll(
+      /Case\s+(\d+):\s*(✓ PASS|✗ FAIL|○ SKIP)/g
+    );
     for (const match of caseMatches) {
       results.standard.push({
         case: parseInt(match[1]),
-        status: match[2].includes("PASS") ? "pass" : match[2].includes("FAIL") ? "fail" : "skip",
+        status: match[2].includes("PASS")
+          ? "pass"
+          : match[2].includes("FAIL")
+          ? "fail"
+          : "skip",
       });
     }
   }
 
-  // Parse strict tests
-  const strictMatch = output.match(
+  // Parse diagnosis only tests
+  const diagnosisOnlyMatch = output.match(
     /STRICT TESTS[^\n]*\n[-\s]*\n([\s\S]*?)(?=\n\s*-{10,}|\n\s*Passed:)/
   );
-  if (strictMatch) {
-    const caseMatches = strictMatch[1].matchAll(/Case\s+(\d+):\s*(✓ PASS|✗ FAIL|○ SKIP)/g);
+  if (diagnosisOnlyMatch) {
+    const caseMatches = diagnosisOnlyMatch[1].matchAll(
+      /Case\s+(\d+):\s*(✓ PASS|✗ FAIL|○ SKIP)/g
+    );
     for (const match of caseMatches) {
-      results.strict.push({
+      results.diagnosis_only.push({
         case: parseInt(match[1]),
-        status: match[2].includes("PASS") ? "pass" : match[2].includes("FAIL") ? "fail" : "skip",
+        status: match[2].includes("PASS")
+          ? "pass"
+          : match[2].includes("FAIL")
+          ? "fail"
+          : "skip",
       });
     }
   }
 
-  if (results.standard.length === 0 && results.strict.length === 0) {
+  if (results.standard.length === 0 && results.diagnosis_only.length === 0) {
     return null;
   }
 

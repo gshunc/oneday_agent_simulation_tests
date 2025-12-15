@@ -410,7 +410,7 @@ Write-Host "----------------------------------------------------------------" -F
 Write-Host ""
 Write-Host "  Run all tests:              uv run pytest -n auto"
 Write-Host "  Run standard tests only:    uv run pytest -n auto -k standard"
-Write-Host "  Run strict tests only:      uv run pytest -n auto -k strict"
+Write-Host "  Run diagnosis_only tests only:      uv run pytest -n auto -k diagnosis_only"
 Write-Host "  Run specific case:          uv run pytest -n auto -k case_3"
 Write-Host "  Use different model:        uv run pytest -n auto --model claude-4.5-sonnet"
 Write-Host "  ^^^ In order to use a different model, ensure that the API key is added to the .env file. Additionally, ensure that the model is supported. ^^^"

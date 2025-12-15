@@ -340,7 +340,7 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 echo "  Run all tests:              uv run pytest -n auto"
 echo "  Run standard tests only:    uv run pytest -n auto -k standard"
-echo "  Run strict tests only:      uv run pytest -n auto -k strict"
+echo "  Run diagnosis_only tests only:      uv run pytest -n auto -k diagnosis_only"
 echo "  Run specific case:          uv run pytest -n auto -k case_3"
 echo "  Use different model:        uv run pytest -n auto --model claude-4.5-sonnet"
 echo "  ^^^ In order to use a different model, ensure that the API key is added to the .env file. Additionally, ensure that the model is supported. ^^^"

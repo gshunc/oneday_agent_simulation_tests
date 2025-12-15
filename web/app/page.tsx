@@ -9,7 +9,7 @@ type TestResult = {
 
 type Results = {
   standard: TestResult[];
-  strict: TestResult[];
+  diagnosis_only: TestResult[];
   model: string;
   timestamp: string;
 };
@@ -107,7 +107,13 @@ export default function Home() {
         }}
       >
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              fontWeight: 500,
+            }}
+          >
             Model
           </label>
           <select
@@ -123,13 +129,21 @@ export default function Home() {
             }}
           >
             <option value="gpt-5-mini">GPT-5 Mini (OpenAI)</option>
-            <option value="claude-4.5-sonnet">Claude 4.5 Sonnet (Anthropic)</option>
+            <option value="claude-4.5-sonnet">
+              Claude 4.5 Sonnet (Anthropic)
+            </option>
             <option value="gemini-2.5-flash">Gemini 2.5 Flash (Google)</option>
           </select>
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              fontWeight: 500,
+            }}
+          >
             LangWatch API Key
           </label>
           <input
@@ -150,8 +164,15 @@ export default function Home() {
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>
-            OpenAI API Key {!needsAnthropicKey && !needsGoogleKey && "(required)"}
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              fontWeight: 500,
+            }}
+          >
+            OpenAI API Key{" "}
+            {!needsAnthropicKey && !needsGoogleKey && "(required)"}
           </label>
           <input
             type="password"
@@ -172,7 +193,13 @@ export default function Home() {
 
         {needsAnthropicKey && (
           <div style={{ marginBottom: "1rem" }}>
-            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "0.5rem",
+                fontWeight: 500,
+              }}
+            >
               Anthropic API Key (required)
             </label>
             <input
@@ -195,7 +222,13 @@ export default function Home() {
 
         {needsGoogleKey && (
           <div style={{ marginBottom: "1rem" }}>
-            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "0.5rem",
+                fontWeight: 500,
+              }}
+            >
               Google AI API Key (required)
             </label>
             <input
@@ -287,34 +320,55 @@ export default function Home() {
             Model: {results.model} | Time: {results.timestamp}
           </p>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+            }}
+          >
             <div>
               <h3>Standard Tests</h3>
               <div style={{ fontFamily: "monospace", fontSize: "0.9rem" }}>
                 {results.standard.map((r) => (
                   <div key={r.case} style={{ padding: "0.25rem 0" }}>
-                    Case {r.case}: {r.status === "pass" ? "✓ PASS" : r.status === "fail" ? "✗ FAIL" : "○ SKIP"}
+                    Case {r.case}:{" "}
+                    {r.status === "pass"
+                      ? "✓ PASS"
+                      : r.status === "fail"
+                      ? "✗ FAIL"
+                      : "○ SKIP"}
                   </div>
                 ))}
               </div>
               <p style={{ color: "#666", fontSize: "0.9rem" }}>
-                Passed: {results.standard.filter((r) => r.status === "pass").length} /{" "}
+                Passed:{" "}
+                {results.standard.filter((r) => r.status === "pass").length} /{" "}
                 {results.standard.length}
               </p>
             </div>
 
             <div>
-              <h3>Strict Tests</h3>
+              <h3>Diagnosis Only Tests</h3>
               <div style={{ fontFamily: "monospace", fontSize: "0.9rem" }}>
-                {results.strict.map((r) => (
+                {results.diagnosis_only.map((r) => (
                   <div key={r.case} style={{ padding: "0.25rem 0" }}>
-                    Case {r.case}: {r.status === "pass" ? "✓ PASS" : r.status === "fail" ? "✗ FAIL" : "○ SKIP"}
+                    Case {r.case}:{" "}
+                    {r.status === "pass"
+                      ? "✓ PASS"
+                      : r.status === "fail"
+                      ? "✗ FAIL"
+                      : "○ SKIP"}
                   </div>
                 ))}
               </div>
               <p style={{ color: "#666", fontSize: "0.9rem" }}>
-                Passed: {results.strict.filter((r) => r.status === "pass").length} /{" "}
-                {results.strict.length}
+                Passed:{" "}
+                {
+                  results.diagnosis_only.filter((r) => r.status === "pass")
+                    .length
+                }{" "}
+                / {results.diagnosis_only.length}
               </p>
             </div>
           </div>
