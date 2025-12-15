@@ -3,10 +3,13 @@ pytest configuration for OneDay agent testing with pytest-xdist support.
 
 Uses pytest hooks to share testrun_uid across parallel workers, with separate
 UIDs for standard and strict test variants.
+
+Doc extraction runs ONCE in the main process and scenarios are passed to workers
+to avoid redundant API calls and cache race conditions.
 """
 
 import pytest
-import os
+import json
 import re
 from datetime import datetime, timezone
 from collections import defaultdict
@@ -15,6 +18,11 @@ from collections import defaultdict
 # Store results per variant (standard/strict)
 _test_results = defaultdict(list)
 _test_metadata = {}
+
+
+def _is_xdist_worker(config):
+    """Check if we're running as an xdist worker."""
+    return hasattr(config, 'workerinput')
 
 
 def pytest_addoption(parser):
@@ -29,7 +37,7 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    """Set up base test run ID once at startup (before workers spawn)."""
+    """Set up base test run ID and load scenarios once at startup."""
     # Get model name from CLI option
     model_label = config.getoption("--model")
 
@@ -44,12 +52,25 @@ def pytest_configure(config):
     _test_metadata["model"] = model_label
     _test_metadata["timestamp"] = timestamp
 
+    # Load scenarios - only in main process, workers get them via workerinput
+    if not _is_xdist_worker(config):
+        # Main process: run doc extraction once
+        from doc_extraction.doc_to_scenarios import doc_to_scenarios
+        scenarios = doc_to_scenarios()
+        config._scenarios = scenarios
+        print(f"✓ Loaded {len(scenarios)} scenarios from Google Doc (main process)")
+    else:
+        # Worker process: deserialize scenarios from workerinput
+        config._scenarios = json.loads(config.workerinput['scenarios'])
+
 
 def pytest_configure_node(node):
-    """Pass the base testrun_uid and model to each xdist worker."""
+    """Pass the base testrun_uid, model, and scenarios to each xdist worker."""
     node.workerinput["base_testrun_uid"] = node.config.base_testrun_uid
     node.workerinput["model_name"] = node.config.model_name
     node.workerinput["timestamp"] = node.config.timestamp
+    # Serialize scenarios to JSON for worker
+    node.workerinput["scenarios"] = json.dumps(node.config._scenarios)
 
 
 def pytest_runtest_logreport(report):
@@ -182,3 +203,19 @@ def testrun_uid(request):
         variant = "unknown"
 
     return f"{base_uid}-{variant}"
+
+
+def pytest_generate_tests(metafunc):
+    """
+    Dynamically parametrize tests with scenarios loaded from Google Doc.
+
+    This runs during test collection and uses scenarios loaded in pytest_configure,
+    avoiding module-level imports that would cause each xdist worker to re-fetch.
+    """
+    if 'test_scenario' in metafunc.fixturenames:
+        scenarios = metafunc.config._scenarios
+        metafunc.parametrize(
+            'test_scenario',
+            scenarios,
+            ids=lambda s: f"case_{s['case_number']}"
+        )

@@ -4,14 +4,15 @@ import litellm
 litellm.drop_params = True  # Ignore params models don't support
 from dotenv import load_dotenv
 from typing import TypedDict
-from doc_extraction.doc_to_scenarios import doc_to_scenarios
 load_dotenv()
+
 
 class Scenario(TypedDict):
     """Type definition for test scenario data"""
     case_number: int
     name: str
     description: str
+    original_text: str
     expected_diagnosis: str | None
 
 def oneday_guidelines() -> str:
@@ -171,10 +172,6 @@ class OneDayAgentAdapter(scenario.AgentAdapter):
         return generate_oneday_agent_response(input.messages, self.model)
 
 
-doc_scenarios = doc_to_scenarios()
-TEST_SCENARIOS: list[Scenario] = doc_scenarios[:8]
-print(f"✓ Loaded {len(doc_scenarios)} scenarios from Google Doc")
-
 async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, strict: bool = False):
     """
     Shared helper that runs a OneDay agent scenario test.
@@ -220,15 +217,13 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
-@pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
 async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str, model_id: str):
-    """Standard test for OneDay agent diagnostic scenarios"""
+    """Standard test for OneDay agent diagnostic scenarios."""
     await run_oneday_scenario(test_scenario, testrun_uid, model_id, strict=False)
 
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
-@pytest.mark.parametrize("test_scenario", TEST_SCENARIOS, ids=lambda s: f"case_{s['case_number']}")
 async def test_oneday_agent_strict(test_scenario: Scenario, testrun_uid: str, model_id: str):
     """
     Strict test for OneDay agent diagnostic scenarios.
