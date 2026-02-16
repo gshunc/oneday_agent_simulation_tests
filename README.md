@@ -4,30 +4,6 @@ This project runs automated tests that simulate conversations between a nurse an
 
 ---
 
-## 🚀 Web UI (Easiest Way to Run Tests)
-
-A local web interface is available for running tests without using the command line.
-
-**To start:**
-
-```bash
-cd web
-npm install   # First time only
-npm run dev
-```
-
-Then open **http://localhost:3000** in your browser.
-
-The web UI lets you:
-
-- Select which AI model to test
-- Enter API keys directly (no `.env` file needed)
-- Watch test progress in real-time
-- View results in a formatted table
-- Link directly to the LangWatch dashboard
-
----
-
 ## What This Does
 
 The tests simulate realistic nurse-agent conversations where:
@@ -216,3 +192,30 @@ For detailed results including full conversation transcripts:
 ├── .env                    # Your API keys (don't share this!)
 └── pyproject.toml          # Project dependencies
 ```
+
+---
+
+## 🚀 Web UI (Deprecated)
+
+<s>A local web interface is available for running tests without using the command line.
+
+**To start:**
+
+```bash
+cd web
+npm install   # First time only
+npm run dev
+```
+
+Then open **http://localhost:3000** in your browser.
+
+The web UI lets you:
+
+- Select which AI model to test
+- Enter API keys directly (no `.env` file needed)
+- Watch test progress in real-time
+- View results in a formatted table
+- Link directly to the LangWatch dashboard
+</s>
+
+---
