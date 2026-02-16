@@ -149,7 +149,7 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
 
 
 @scenario.cache()
-def generate_oneday_agent_response(messages, model: str) -> scenario.AgentReturnTypes:
+def generate_oneday_agent_response(messages, model: str):
     response = litellm.completion(
         model=model,
         messages=[
@@ -160,19 +160,28 @@ def generate_oneday_agent_response(messages, model: str) -> scenario.AgentReturn
             *messages,
         ],
     )
-    return response.choices[0].message
+    cost = litellm.completion_cost(completion_response=response)
+    return response.choices[0].message, response.usage, cost
 
 
 class OneDayAgentAdapter(scenario.AgentAdapter):
     """Provides the scenario agent adapter for the OneDay workflow"""
     def __init__(self, model: str):
         self.model = model
+        self.total_prompt_tokens = 0
+        self.total_completion_tokens = 0
+        self.total_cost = 0.0
 
     async def call(self, input: scenario.AgentInput) -> scenario.AgentReturnTypes:
-        return generate_oneday_agent_response(input.messages, self.model)
+        message, usage, cost = generate_oneday_agent_response(input.messages, self.model)
+        if usage:
+            self.total_prompt_tokens += usage.prompt_tokens or 0
+            self.total_completion_tokens += usage.completion_tokens or 0
+        self.total_cost += cost or 0.0
+        return message
 
 
-async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, diagnosis_only: bool = False):
+async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_id: str, diagnosis_only: bool = False, request=None):
     """
     Shared helper that runs a OneDay agent scenario test.
 
@@ -197,11 +206,12 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
     if diagnosis_only:
         criteria = [f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}"]
 
+    agent = OneDayAgentAdapter(model_id)
     result = await scenario.run(
         name=f"OneDay - {test_name}",
         description=description,
         agents=[
-            OneDayAgentAdapter(model_id),
+            agent,
             scenario.UserSimulatorAgent(),
             scenario.JudgeAgent(
                 criteria=criteria,
@@ -212,21 +222,29 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         set_id=testrun_uid
     )
 
+    # Store timing and token data for the session summary
+    if request is not None:
+        request.node.user_properties.append(("total_time", result.total_time))
+        request.node.user_properties.append(("agent_time", result.agent_time))
+        request.node.user_properties.append(("prompt_tokens", agent.total_prompt_tokens))
+        request.node.user_properties.append(("completion_tokens", agent.total_completion_tokens))
+        request.node.user_properties.append(("cost", agent.total_cost))
+
     assert result.success
 
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
-async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str, model_id: str):
+async def test_oneday_agent_standard(test_scenario: Scenario, testrun_uid: str, model_id: str, request):
     """Standard test for OneDay agent diagnostic scenarios."""
-    await run_oneday_scenario(test_scenario, testrun_uid, model_id)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id, request=request)
 
 
 @pytest.mark.agent_test
 @pytest.mark.asyncio
-async def test_oneday_agent_diagnosis_only(test_scenario: Scenario, testrun_uid: str, model_id: str):
+async def test_oneday_agent_diagnosis_only(test_scenario: Scenario, testrun_uid: str, model_id: str, request):
     """
     Test for OneDay agent diagnostic scenarios.
     Requires the agent to provide the correct diagnosis only.
     """
-    await run_oneday_scenario(test_scenario, testrun_uid, model_id, diagnosis_only=True)
+    await run_oneday_scenario(test_scenario, testrun_uid, model_id, diagnosis_only=True, request=request)

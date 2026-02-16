@@ -23,3 +23,5 @@ uv.lock
 web/node_modules/
 
 web/.next/
+
+reports/

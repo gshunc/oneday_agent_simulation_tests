@@ -10,6 +10,8 @@ to avoid redundant API calls and cache race conditions.
 import pytest
 import json
 import re
+import math
+import os
 from datetime import datetime, timezone
 from collections import defaultdict
 
@@ -89,12 +91,45 @@ def pytest_runtest_logreport(report):
         case_match = re.search(r'case_(\d+)', test_name)
         case_num = int(case_match.group(1)) if case_match else 0
 
+        # Extract timing data from user_properties
+        props = dict(report.user_properties) if hasattr(report, 'user_properties') else {}
+
         _test_results[variant].append({
             "case": case_num,
             "passed": report.passed,
             "failed": report.failed,
             "skipped": report.skipped,
+            "total_time": props.get("total_time"),
+            "agent_time": props.get("agent_time"),
+            "prompt_tokens": props.get("prompt_tokens"),
+            "completion_tokens": props.get("completion_tokens"),
+            "cost": props.get("cost"),
         })
+
+
+def _compute_timing_stats(values):
+    """Compute avg, min, max, and p90 for a list of numeric values."""
+    if not values:
+        return None
+    values = sorted(values)
+    n = len(values)
+    avg = sum(values) / n
+    stdev = math.sqrt(sum((v - avg) ** 2 for v in values) / n)
+    p90_idx = int(n * 0.9)
+    # For small lists, p90 is the last element
+    p90 = values[min(p90_idx, n - 1)]
+    return {
+        "avg": avg,
+        "stdev": stdev,
+        "min": values[0],
+        "max": values[-1],
+        "p90": p90,
+    }
+
+
+def _format_timing_stats(stats):
+    """Format timing stats dict into a readable string."""
+    return f"avg={stats['avg']:.1f}s  stdev={stats['stdev']:.1f}s  min={stats['min']:.1f}s  max={stats['max']:.1f}s  p90={stats['p90']:.1f}s"
 
 
 def pytest_sessionfinish(session, exitstatus):
@@ -137,12 +172,76 @@ def pytest_sessionfinish(session, exitstatus):
             else:
                 status = "○ SKIP"
 
-            print(f"    Case {case_num:3d}: {status}")
+            timing_str = ""
+            if r.get("total_time") is not None:
+                timing_str += f"  total={r['total_time']:.1f}s"
+            if r.get("agent_time") is not None:
+                timing_str += f"  agent={r['agent_time']:.1f}s"
+            if r.get("prompt_tokens") is not None:
+                tokens = (r.get("prompt_tokens") or 0) + (r.get("completion_tokens") or 0)
+                timing_str += f"  tokens={tokens}"
+            if r.get("cost") is not None:
+                timing_str += f"  cost=${r['cost']:.4f}"
+
+            print(f"    Case {case_num:3d}: {status}{timing_str}")
 
         print(f"  {'-' * 40}")
         print(f"  Passed: {passed}  |  Failed: {failed}  |  Skipped: {skipped}")
 
+        # Timing statistics
+        total_times = [r["total_time"] for r in results if r.get("total_time") is not None]
+        agent_times = [r["agent_time"] for r in results if r.get("agent_time") is not None]
+
+        prompt_tokens = [r["prompt_tokens"] for r in results if r.get("prompt_tokens") is not None]
+        completion_tokens = [r["completion_tokens"] for r in results if r.get("completion_tokens") is not None]
+
+        if total_times:
+            total_stats = _compute_timing_stats(total_times)
+            print(f"\n  Total time:  {_format_timing_stats(total_stats)}")
+        if agent_times:
+            agent_stats = _compute_timing_stats(agent_times)
+            print(f"  Agent time:  {_format_timing_stats(agent_stats)}")
+        costs = [r["cost"] for r in results if r.get("cost") is not None]
+
+        if prompt_tokens:
+            total_prompt = sum(prompt_tokens)
+            total_completion = sum(completion_tokens)
+            print(f"\n  Agent tokens:  prompt={total_prompt}  completion={total_completion}  total={total_prompt + total_completion}")
+        if costs:
+            print(f"  Agent cost:   ${sum(costs):.4f}")
+
     print(f"\n{separator}\n")
+
+    # Write JSON results file for orchestration tooling
+    json_output_dir = os.environ.get("ONEDAY_RESULTS_DIR")
+    if json_output_dir:
+        os.makedirs(json_output_dir, exist_ok=True)
+        json_data = {
+            "model": model,
+            "timestamp": timestamp,
+            "variants": {},
+        }
+        for variant in ["standard", "diagnosis_only"]:
+            results = _test_results.get(variant, [])
+            if not results:
+                continue
+            results.sort(key=lambda x: x["case"])
+            total_times = [r["total_time"] for r in results if r.get("total_time") is not None]
+            agent_times = [r["agent_time"] for r in results if r.get("agent_time") is not None]
+            prompt_tok = [r["prompt_tokens"] for r in results if r.get("prompt_tokens") is not None]
+            completion_tok = [r["completion_tokens"] for r in results if r.get("completion_tokens") is not None]
+            costs = [r["cost"] for r in results if r.get("cost") is not None]
+            json_data["variants"][variant] = {
+                "cases": results,
+                "total_time_stats": _compute_timing_stats(total_times),
+                "agent_time_stats": _compute_timing_stats(agent_times),
+                "total_prompt_tokens": sum(prompt_tok) if prompt_tok else 0,
+                "total_completion_tokens": sum(completion_tok) if completion_tok else 0,
+                "total_cost": sum(costs) if costs else 0,
+            }
+        json_path = os.path.join(json_output_dir, f"{model}.json")
+        with open(json_path, "w") as f:
+            json.dump(json_data, f, indent=2)
 
 
 # Model name mapping: friendly name -> litellm model ID
