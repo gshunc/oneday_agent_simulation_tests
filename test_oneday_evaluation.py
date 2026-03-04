@@ -174,6 +174,10 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       Please only reply with the exact word. Do not use any other words or phrases."
       This is an ending condition which should constitute the end of a run. If at this poiint no diagnosis has been given, the conversation is a failure and you should call the finish_test tool.
       </NOTE>
+
+      <NOTE>
+      If the agent's message is empty or contains only the <END> tag with no actual content, the agent has abruptly ended the conversation without providing a diagnosis. This is an automatic failure — call finish_test immediately and mark all criteria as failed.
+      </NOTE>
     """
 
 
@@ -205,7 +209,13 @@ def generate_oneday_agent_response(messages, model: str, turn: bool = False, sim
             if response.status_code == 500 and "unexpectedly received user input" in response.text:
                 return {"role": "assistant", "content": "<END>"}
             raise RuntimeError(f"Turn API error {response.status_code}: {response.text[:500]}")
-        message = response.json()["message"]
+        raw_response = response.json()
+        message = raw_response["message"]
+        state = raw_response.get("state")
+
+        # Turn journey ended or returned empty — treat as conversation end
+        if state == "end" or not message:
+            return {"role": "assistant", "content": "<END>"}
 
     else:
         response = litellm.completion(
@@ -220,6 +230,14 @@ def generate_oneday_agent_response(messages, model: str, turn: bool = False, sim
         )
 
         message = response.choices[0].message #type: ignore
+
+        # Some models (e.g. Claude Sonnet) may hallucinate tool calls even when
+        # no tools are provided. Convert these to plain text to avoid breaking
+        # downstream consumers (Turn API, user simulator, etc.).
+        if message.content is None and hasattr(message, 'tool_calls') and message.tool_calls:
+            print(f"WARNING: Model returned tool_calls instead of text: {message.tool_calls}")
+            message.content = str(message.tool_calls[0].function.arguments)
+            message.tool_calls = None
 
     return message #type: ignore
 
