@@ -12,13 +12,92 @@ import json
 import re
 import math
 import os
+import requests
+import litellm
+from litellm.types.utils import ModelResponse, Usage
 from datetime import datetime, timezone
 from collections import defaultdict
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Store results per variant
 _test_results = defaultdict(list)
 _test_metadata = {}
+
+
+def compute_usage_from_traces(trace_ids: list[str]) -> dict:
+    """Fetch LangWatch traces and compute total token usage, cost, and per-agent LLM timing."""
+    langwatch_api_key = os.getenv("LANGWATCH_API_KEY")
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    total_cost = 0.0
+    agent_llm_ms = 0
+    judge_llm_ms = 0
+    user_sim_llm_ms = 0
+
+    for trace_id in trace_ids:
+        try:
+            response = requests.get(
+                f"https://app.langwatch.ai/api/traces/{trace_id}",
+                headers={"X-Auth-Token": langwatch_api_key},
+            )
+            if response.status_code != 200:
+                continue
+            trace = response.json()
+        except Exception:
+            continue
+
+        spans_by_id = {s["span_id"]: s for s in trace.get("spans", [])}
+
+        for span in trace.get("spans", []):
+            if span.get("type") != "llm":
+                continue
+            metrics = span.get("metrics") or {}
+            model = span.get("model", "")
+            prompt_tokens = metrics.get("prompt_tokens") or 0
+            completion_tokens = metrics.get("completion_tokens") or 0
+            total_prompt_tokens += prompt_tokens
+            total_completion_tokens += completion_tokens
+            try:
+                mock_response = ModelResponse(
+                    model=model,
+                    usage=Usage(
+                        prompt_tokens=prompt_tokens,
+                        completion_tokens=completion_tokens,
+                        total_tokens=prompt_tokens + completion_tokens,
+                    ),
+                )
+                total_cost += litellm.completion_cost(
+                    completion_response=mock_response,
+                    model=model,
+                )
+            except Exception:
+                pass  # Model not in litellm pricing table
+
+            # Per-agent LLM timing via parent span name
+            ts = span.get("timestamps") or {}
+            started = ts.get("started_at")
+            finished = ts.get("finished_at")
+            if started and finished:
+                duration_ms = finished - started
+                parent_id = span.get("parent_id")
+                parent_name = (spans_by_id.get(parent_id) or {}).get("name", "") if parent_id else ""
+                if "UserSimulator" in parent_name:
+                    user_sim_llm_ms += duration_ms
+                elif "Judge" in parent_name:
+                    judge_llm_ms += duration_ms
+                else:
+                    agent_llm_ms += duration_ms
+
+    return {
+        "prompt_tokens": total_prompt_tokens,
+        "completion_tokens": total_completion_tokens,
+        "cost": total_cost,
+        "agent_llm_ms": agent_llm_ms,
+        "judge_llm_ms": judge_llm_ms,
+        "user_sim_llm_ms": user_sim_llm_ms,
+    }
 
 
 def _is_xdist_worker(config):
@@ -32,8 +111,29 @@ def pytest_addoption(parser):
         "--model",
         action="store",
         default="gpt-5-mini",
-        choices=["gpt-5-mini", "claude-4.5-sonnet", "gemini-2.5-flash"],
+        choices=[
+            "claude-opus-4-6",
+            "claude-sonnet-4-6",
+            "claude-haiku-4-5",
+            "gpt-5.2",
+            "gpt-5-mini",
+            "gemini-3-pro-preview",
+            "gemini-3-flash-preview",
+        ],
         help="Model to use for testing (default: gpt-5-mini)"
+    )
+    parser.addoption(
+        "--turn",
+        action="store_true",
+        default=False,
+        help="Use the Turn.io simulation API instead of calling the model directly"
+    )
+    parser.addoption(
+        "--turn-uuid",
+        action="store",
+        default=None,
+        metavar="UUID",
+        help="Turn.io journey UUID to use (overrides TURN_JOURNEY_UUID env var; auto-enables --turn)",
     )
 
 
@@ -41,16 +141,26 @@ def pytest_configure(config):
     """Set up base test run ID and load scenarios once at startup."""
     # Get model name from CLI option
     model_label = config.getoption("--model")
+    turn_uuid_arg = config.getoption("--turn-uuid", default=None)
+    use_turn = config.getoption("--turn") or bool(turn_uuid_arg)
 
     # Generate a human-readable timestamp in UTC
     timestamp = datetime.now(timezone.utc).strftime('%b%d-%H%MZ')  # e.g., Dec03-1430Z
-    base_uid = f"oneday-{model_label}-{timestamp}"
+    if turn_uuid_arg:
+        run_label = f"turn-{turn_uuid_arg[:8]}"
+    elif use_turn:
+        run_label = "turn"
+    else:
+        run_label = model_label
+    base_uid = f"oneday-{run_label}-{timestamp}"
     config.base_testrun_uid = base_uid
     config.model_name = model_label
+    config.use_turn = use_turn
+    config.turn_uuid = turn_uuid_arg  # None when not provided; env var fallback stays in the test
     config.timestamp = timestamp
 
     # Store metadata for final report
-    _test_metadata["model"] = model_label
+    _test_metadata["model"] = run_label
     _test_metadata["timestamp"] = timestamp
 
     # Load scenarios - only in main process, workers get them via workerinput
@@ -69,6 +179,8 @@ def pytest_configure_node(node):
     """Pass the base testrun_uid, model, and scenarios to each xdist worker."""
     node.workerinput["base_testrun_uid"] = node.config.base_testrun_uid
     node.workerinput["model_name"] = node.config.model_name
+    node.workerinput["use_turn"] = str(node.config.use_turn)
+    node.workerinput["turn_uuid"] = node.config.turn_uuid or ""
     node.workerinput["timestamp"] = node.config.timestamp
     # Serialize scenarios to JSON for worker
     node.workerinput["scenarios"] = json.dumps(node.config._scenarios)
@@ -91,8 +203,26 @@ def pytest_runtest_logreport(report):
         case_match = re.search(r'case_(\d+)', test_name)
         case_num = int(case_match.group(1)) if case_match else 0
 
-        # Extract timing data from user_properties
+        # Extract timing data and trace_ids from user_properties
         props = dict(report.user_properties) if hasattr(report, 'user_properties') else {}
+        trace_ids_str = props.get("trace_ids", "")
+        trace_ids = [t for t in trace_ids_str.split(",") if t] if trace_ids_str else []
+
+        turn_agent_prompt = props.get("turn_agent_prompt_tokens")
+        if turn_agent_prompt is not None:
+            # Turn runs: only count OneDay agent tokens (production metric).
+            # LangWatch is used solely for timing breakdown (Judge/UserSimulator overhead).
+            lw = compute_usage_from_traces(trace_ids)
+            usage = {
+                "prompt_tokens": int(turn_agent_prompt),
+                "completion_tokens": int(props.get("turn_agent_completion_tokens", 0)),
+                "cost": 0.0,
+                "agent_llm_ms": lw["agent_llm_ms"],
+                "judge_llm_ms": lw["judge_llm_ms"],
+                "user_sim_llm_ms": lw["user_sim_llm_ms"],
+            }
+        else:
+            usage = compute_usage_from_traces(trace_ids)
 
         _test_results[variant].append({
             "case": case_num,
@@ -101,9 +231,13 @@ def pytest_runtest_logreport(report):
             "skipped": report.skipped,
             "total_time": props.get("total_time"),
             "agent_time": props.get("agent_time"),
-            "prompt_tokens": props.get("prompt_tokens"),
-            "completion_tokens": props.get("completion_tokens"),
-            "cost": props.get("cost"),
+            "prompt_tokens": usage["prompt_tokens"],
+            "completion_tokens": usage["completion_tokens"],
+            "cost": usage["cost"],
+            "agent_llm_ms": usage["agent_llm_ms"],
+            "judge_llm_ms": usage["judge_llm_ms"],
+            "user_sim_llm_ms": usage["user_sim_llm_ms"],
+            "trace_id": trace_ids[0] if trace_ids else None,
         })
 
 
@@ -147,7 +281,7 @@ def pytest_sessionfinish(session, exitstatus):
     print(f"  Model: {model}  |  Time: {timestamp}")
     print(separator)
 
-    for variant in ["standard", "diagnosis_only"]:
+    for variant in ["standard"]:
         results = _test_results.get(variant, [])
         if not results:
             continue
@@ -210,6 +344,19 @@ def pytest_sessionfinish(session, exitstatus):
         if costs:
             print(f"  Agent cost:   ${sum(costs):.4f}")
 
+        agent_llm_ms = [r["agent_llm_ms"] for r in results if r.get("agent_llm_ms")]
+        judge_llm_ms = [r["judge_llm_ms"] for r in results if r.get("judge_llm_ms")]
+        user_sim_llm_ms = [r["user_sim_llm_ms"] for r in results if r.get("user_sim_llm_ms")]
+        if agent_llm_ms or judge_llm_ms or user_sim_llm_ms:
+            def fmt_s(ms_list): return f"{sum(ms_list)/1000:.1f}s (avg {sum(ms_list)/len(ms_list)/1000:.1f}s)"
+            print(f"\n  LLM time breakdown (total across all cases, avg per case):")
+            if agent_llm_ms:
+                print(f"    Agent:    {fmt_s(agent_llm_ms)}")
+            if judge_llm_ms:
+                print(f"    Judge:    {fmt_s(judge_llm_ms)}")
+            if user_sim_llm_ms:
+                print(f"    User sim: {fmt_s(user_sim_llm_ms)}")
+
     print(f"\n{separator}\n")
 
     # Write JSON results file for orchestration tooling
@@ -231,6 +378,9 @@ def pytest_sessionfinish(session, exitstatus):
             prompt_tok = [r["prompt_tokens"] for r in results if r.get("prompt_tokens") is not None]
             completion_tok = [r["completion_tokens"] for r in results if r.get("completion_tokens") is not None]
             costs = [r["cost"] for r in results if r.get("cost") is not None]
+            agent_llm_ms = [r["agent_llm_ms"] for r in results if r.get("agent_llm_ms")]
+            judge_llm_ms = [r["judge_llm_ms"] for r in results if r.get("judge_llm_ms")]
+            user_sim_llm_ms = [r["user_sim_llm_ms"] for r in results if r.get("user_sim_llm_ms")]
             json_data["variants"][variant] = {
                 "cases": results,
                 "total_time_stats": _compute_timing_stats(total_times),
@@ -238,6 +388,9 @@ def pytest_sessionfinish(session, exitstatus):
                 "total_prompt_tokens": sum(prompt_tok) if prompt_tok else 0,
                 "total_completion_tokens": sum(completion_tok) if completion_tok else 0,
                 "total_cost": sum(costs) if costs else 0,
+                "total_agent_llm_ms": sum(agent_llm_ms) if agent_llm_ms else 0,
+                "total_judge_llm_ms": sum(judge_llm_ms) if judge_llm_ms else 0,
+                "total_user_sim_llm_ms": sum(user_sim_llm_ms) if user_sim_llm_ms else 0,
             }
         json_path = os.path.join(json_output_dir, f"{model}.json")
         with open(json_path, "w") as f:
@@ -246,22 +399,45 @@ def pytest_sessionfinish(session, exitstatus):
 
 # Model name mapping: friendly name -> litellm model ID
 MODEL_MAPPING = {
+    "claude-opus-4-6": "anthropic/claude-opus-4-6",
+    "claude-sonnet-4-6": "anthropic/claude-sonnet-4-6",
+    "claude-haiku-4-5": "anthropic/claude-haiku-4-5",
+    "gpt-5.2": "openai/gpt-5.2",
     "gpt-5-mini": "openai/gpt-5-mini",
-    "claude-4.5-sonnet": "anthropic/claude-sonnet-4.5-20250929",
-    "gemini-2.5-flash": "google/gemini-2.5-flash",
+    "gemini-3-pro-preview": "google/gemini-3-pro-preview",
+    "gemini-3-flash-preview": "google/gemini-3-flash-preview",
 }
 
 
 @pytest.fixture(scope="session")
 def model_id(request):
     """Get the litellm model ID for the selected model."""
-    # Get model name from config or worker input
     if hasattr(request.config, "workerinput"):
         model_name = request.config.workerinput["model_name"]
     else:
         model_name = request.config.model_name
-
     return MODEL_MAPPING[model_name]
+
+
+@pytest.fixture(scope="session")
+def use_turn(request):
+    """Whether to use the Turn.io simulation API instead of calling the model directly."""
+    if hasattr(request.config, "workerinput"):
+        return request.config.workerinput["use_turn"] == "True"
+    return request.config.use_turn
+
+
+@pytest.fixture(scope="session")
+def turn_journey_uuid(request):
+    """Turn.io journey UUID from --turn-uuid CLI arg, or None if not provided.
+
+    When None, the test falls back to TURN_JOURNEY_UUID env var (existing behaviour).
+    When set, the env var is ignored — the CLI arg takes exclusive precedence.
+    """
+    if hasattr(request.config, "workerinput"):
+        val = request.config.workerinput.get("turn_uuid", "")
+        return val or None
+    return request.config.turn_uuid
 
 
 @pytest.fixture(scope="session", autouse=True)

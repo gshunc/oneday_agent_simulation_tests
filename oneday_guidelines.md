@@ -106,10 +106,10 @@ EVERY CHILD must be assessed for danger signs. These are SIGNS, which means you 
 
 ### ACTIONS: if there are any danger signs you must:
 
-1. Check the blood sugar. If it is less than 3mmol/L give 25% dextrose 2ml/kg IV (Dilute 50% dextrose with the same volume of normal saline to make 25% dextrose) STAT
-2. Test for malaria with an MRDT. If this is positive, also give artesunate IM/IV. If the child is less than 20kg, give 3mg/kg. If the child is 20kg or more, give 2.4mg/kg.
-3. Give ceftriaxone 100mg/kg IM/IV STAT
-4. Refer to hospital immediately. Communicate that the child must go to hospital to save their life.
+1.  Check the blood sugar. If it is less than 3mmol/L give 25% dextrose 2ml/kg IV (Dilute 50% dextrose with the same volume of normal saline to make 25% dextrose) STAT
+2.  Test for malaria with an MRDT. If this is positive, also give artesunate IM/IV. If the child is less than 20kg, give 3mg/kg. If the child is 20kg or more, give 2.4mg/kg.
+3.  Give ceftriaxone 100mg/kg IM/IV STAT
+4.  Refer to hospital immediately. Communicate that the child must go to hospital to save their life.
 
 ---
 
@@ -158,10 +158,10 @@ EVERY CHILD must be assessed for danger signs. These signs only apply to childre
 
 ### ACTIONS: If there are ANY of these signs above which might indicate bacterial infection you must:
 
-1. Check the blood sugar. If it is less than 3mmol/L give 25% dextrose 2ml/kg IV (Dilute 50% dextrose with the same volume of normal saline to make 25% dextrose) STAT.
-2. Give ceftriaxone 100mg/kg IM/IV STAT. (If less than 2 weeks old, give 50mg/kg instead)
-3. Refer to hospital immediately. Communicate they must reach hospital to save their life.
-4. Instruct the mother to keep the baby wrapped up in blankets and warm
+1.  Check the blood sugar. If it is less than 3mmol/L give 25% dextrose 2ml/kg IV (Dilute 50% dextrose with the same volume of normal saline to make 25% dextrose) STAT.
+2.  Give ceftriaxone 100mg/kg IM/IV STAT. (If less than 2 weeks old, give 50mg/kg instead)
+3.  Refer to hospital immediately. Communicate they must reach hospital to save their life.
+4.  Instruct the mother to keep the baby wrapped up in blankets and warm
 
 ---
 
@@ -201,7 +201,7 @@ Then give 70ml/kg
 - If less than 12 months, give it over 5 hours.
 - If 12 months or above, give it over 2.5 hours.
 
-Reassess the child regularly (every 30 minutes) and if they are not improving, speed up the drip. As soon as they can drink, give ORS at 5ml/kg/hour. Reassess the child after the treatment and either move on to treating as "some dehydration" or "no dehydration" or repeat "severe dehydration".
+Reassess the child regularly (every 30 minutes) and if they are not improving, speed up the drip. As soon as they can drink, give ORS at 5ml/kg/hour. Reassess the child after the treatment and either move on to treating as \"some dehydration\" or \"no dehydration\" or repeat \"severe dehydration\".
 
 **TREATMENT: Some Dehydration** Give ORS 20ml/kg/hour for 4 hours. Show the mother how much the child should drink each hour.
 
@@ -209,7 +209,7 @@ Reassess the child regularly (every 30 minutes) and if they are not improving, s
 - Continue breastfeeding if the child wants.
 - If the child vomits, wait for 10 minutes, and then continue giving ORS.
 - If the child wants more ORS, give them more.
-- Reassess the child after the treatment and either move on to treating as "no dehydration" or "severe dehydration" or repeat "some dehydration".
+- Reassess the child after the treatment and either move on to treating as \"no dehydration\" or \"severe dehydration\" or repeat \"some dehydration\".
 
 **TREATMENT: No Dehydration and Discharge** Discharge home with ORS and zinc tablets.
 
@@ -386,16 +386,18 @@ Suspect a UTI if burning pain when passing urine OR passing urine more frequentl
 - Non-pregnant: Ciprofloxacin 500mg BD 3/7
 - Pregnant: Amoxicillin 500mg TDS 7/7)
 - Communicate: mild infection of the bladder
-1. Drink plenty of water.
-2. Pass urine after sex to prevent UTIs.
-3. Return if no improvement or worsening.
+
+1.  Drink plenty of water.
+2.  Pass urine after sex to prevent UTIs.
+3.  Return if no improvement or worsening.
 
 **Medicate Male**
 
 - Ciprofloxacin 500mg BD 7/7
 - Communicate: infection of urinary system
-1. Drink plenty of water.
-2. Return if no improvement or worsening.
+
+1.  Drink plenty of water.
+2.  Return if no improvement or worsening.
 
 ---
 
@@ -406,12 +408,14 @@ Suspect a UTI if burning pain when passing urine OR passing urine more frequentl
 **1\. If a child, do they have any danger signs?**
 
 - IF YES →
-1. Treat as per Danger Signs in Children
-2. Immediately refer to hospital.
+
+1.  Treat as per Danger Signs in Children
+2.  Immediately refer to hospital.
+
 - IF NO → Continue
 
-**2\. Perform RDT \- ALWAYS Perform an MRDT if there is any fever reported by the patient or caregiver, OR if you measure a fever yourself at the clinic. Keep in mind there are some symptoms that malaria CANNOT cause, and therefore if they are there you may need to diagnose 2 conditions. These symptoms include**
-**1\) Cough, 2\) Flu (runny nose), 3\) Vaginal or penile Discharge 4\) Skin rashes or swelling.**  Fever (history of fever/coldness, or recorded \>37.5°C)
+**2\. Perform RDT \- ALWAYS Perform an MRDT if there is any fever reported by the patient or caregiver, OR if you measure a fever yourself at the clinic. Keep in mind there are some symptoms that malaria CANNOT cause, and therefore if they are there you may need to diagnose 2 conditions. These symptoms include**  
+ **1\) Cough, 2\) Flu (runny nose), 3\) Vaginal or penile Discharge 4\) Skin rashes or swelling.** Fever (history of fever/coldness, or recorded \>37.5°C)
 
 - Vomiting \- Anaemia (pale conjunctiva)
 - Headache \- Jaundice (yellow eyes)
@@ -424,39 +428,56 @@ Suspect a UTI if burning pain when passing urine OR passing urine more frequentl
 
 **3\. Are there signs of severe malaria?**
 
-1) Impaired consciousness (Lethargy, drowsiness, unconsciousness, or confusion)
-2) Convulsions (history of, or witnessed)?
-3) Abnormal breathing: deep breathing or chest indrawing, or SpO2 \<92%
-4) Prostration (can't sit or stand without assistance)?
-5) Severe anaemia (check conjunctiva – or a Hb of \<5 for \<12 year olds, or \<7 for adults on CBC)
-6) Hypoglycaemia (blood sugar \<3mmol/L)
-7) Hyper-parasitaemia (+++ on blood film)
-8) Spontaneous bleeding
-9) Low BP – systolic BP \<90 in adults, \<70 in children, or cold peripheries.
-10) Jaundice (yellow eyes) OR the patient can't take oral medication due to vomiting?
+1.  Impaired consciousness (Lethargy, drowsiness, unconsciousness, or confusion)
+2.  Convulsions (history of, or witnessed)?
+3.  Abnormal breathing: deep breathing or chest indrawing, or SpO2 \<92%
+4.  Prostration (can't sit or stand without assistance)?
+5.  Severe anaemia (check conjunctiva – or a Hb of \<5 for \<12 year olds, or \<7 for adults on CBC)
+6.  Hypoglycaemia (blood sugar \<3mmol/L)
+7.  Hyper-parasitaemia (+++ on blood film)
+8.  Spontaneous bleeding
+9.  Low BP – systolic BP \<90 in adults, \<70 in children, or cold peripheries.
+10. Jaundice (yellow eyes) OR the patient can't take oral medication due to vomiting?
+
 - IF YES to ANY → **TREAT AS SEVERE MALARIA:**
 
-1. Give IV/IM artesunate STAT
-- If \<20kg 3mg/kg. If \>20kg, 2.4mg/kg
-- (if unavailable IM artemether 3.2mg/kg)
-2. Check the blood sugar.
-- If \<3mmol/L give 25% dextrose 2ml/kg IV STAT
-- (Dilute 50% dextrose with the same amount of normal saline to make 25%)
-3. Give IV/IM ceftriaxone STAT
-- 100mg/kg, maximum 2g.
-4. If dehydrated (child) or in shock (adult), give IV normal saline STAT
-- 10ml/kg, maximum 500ml
-5. Refer to hospital immediately
-6. Communicate: the patient has life-threatening malaria and must go to hospital for treatment. After completing the IV treatment, they must complete 3 days of coartem
+1.  Give IV/IM artesunate STAT
+
+
+    - If \<20kg 3mg/kg. If \>20kg, 2.4mg/kg
+    - (if unavailable IM artemether 3.2mg/kg)
+
+2.  Check the blood sugar.
+
+
+    - If \<3mmol/L give 25% dextrose 2ml/kg IV STAT
+    - (Dilute 50% dextrose with the same amount of normal saline to make 25%)
+
+3.  Give IV/IM ceftriaxone STAT
+
+
+    - 100mg/kg, maximum 2g.
+
+4.  If dehydrated (child) or in shock (adult), give IV normal saline STAT
+
+
+    - 10ml/kg, maximum 500ml
+
+5.  Refer to hospital immediately
+6.  Communicate: the patient has life-threatening malaria and must go to hospital for treatment. After completing the IV treatment, they must complete 3 days of coartem
+
 - IF NO to ALL → **MEDICATE AS NON-SEVERE MALARIA:**
 
-1. Consider other illnesses as well, especially in adults and children \>5 years.
-2. Coartem
-- 5-15kg: 1 tablet twice daily for 3 days
-- 15-25kg: 2 tablets twice daily for 3 days.
-- 25-35kg: 3 tablets twice daily for 3 days
-- if \>35kg: 4 tablets twice daily for 3 days.
-3. Paracetamol or ibuprofen (see dosing section) NOTE coartem alternatives have different doses
+1.  Consider other illnesses as well, especially in adults and children \>5 years.
+2.  Coartem
+
+
+    - 5-15kg: 1 tablet twice daily for 3 days
+    - 15-25kg: 2 tablets twice daily for 3 days.
+    - 25-35kg: 3 tablets twice daily for 3 days
+    - if \>35kg: 4 tablets twice daily for 3 days.
+
+3.  Paracetamol or ibuprofen (see dosing section) NOTE coartem alternatives have different doses
 
 **Communicate:**
 
@@ -474,25 +495,26 @@ Meningitis can kill fast, so if you suspect meningitis, leave all other work and
 
 **Suspect meningitis if a patient has:**
 
-1. A fever (\>37.5°C) AND
-2. Neck stiffness OR sensitivity to light OR headache with vomiting OR a bulging fontanelle OR
-3. Impaired consciousness (confusion, lethargy, drowsiness or unconsciousness) with no other obvious cause (such as head injury, alcohol or cerebral malaria)
+1.  A fever (\>37.5°C) AND
+2.  Neck stiffness OR sensitivity to light OR headache with vomiting OR a bulging fontanelle OR
+3.  Impaired consciousness (confusion, lethargy, drowsiness or unconsciousness) with no other obvious cause (such as head injury, alcohol or cerebral malaria)
 
 **If meningitis is suspected:**
 
-1. Give ceftriaxone IM STAT \- 100mg/kg in children, 2g in adults.
-2. Perform an MRDT immediately – if positive, also treat as severe malaria, but still refer as below.
-3. Refer to hospital immediately – They must do lumbar punctures and has inpatient beds. This must be very fast, as meningitis kills quickly.
-4. All household contacts of the suspected case must be given a single dose of ciprofloxacin. Bacterial meningitis can spread in household contacts, but taking a single dose of ciprofloxacin reduces this risk by 90%.
+1.  Give ceftriaxone IM STAT \- 100mg/kg in children, 2g in adults.
+2.  Perform an MRDT immediately – if positive, also treat as severe malaria, but still refer as below.
+3.  Refer to hospital immediately – They must do lumbar punctures and has inpatient beds. This must be very fast, as meningitis kills quickly.
+4.  All household contacts of the suspected case must be given a single dose of ciprofloxacin. Bacterial meningitis can spread in household contacts, but taking a single dose of ciprofloxacin reduces this risk by 90%.
+
 - 10 years and older, give ciprofloxacin 1x 500mg tablet.
 - 9 years and younger, give ciprofloxacin 500mg tablet (250mg).
 
 **Communicate:**
 
-1. Meningitis is a very serious infection of the lining of the brain.
-2. It can kill very quickly, so we will give treatment immediately, before sending to a hospital that is able to confirm meningitis.
-3. Meningitis is diagnosed by performing a lumbar puncture, when they insert a needle to the base of the spine and take a small amount of fluid to test.
-4. Meningitis is infectious and can cause outbreaks. Close contacts, particularly household contacts, are at risk of catching it. If all household contacts take a single dose of ciprofloxacin, then this can prevent the transmission 9 out of 10 times
+1.  Meningitis is a very serious infection of the lining of the brain.
+2.  It can kill very quickly, so we will give treatment immediately, before sending to a hospital that is able to confirm meningitis.
+3.  Meningitis is diagnosed by performing a lumbar puncture, when they insert a needle to the base of the spine and take a small amount of fluid to test.
+4.  Meningitis is infectious and can cause outbreaks. Close contacts, particularly household contacts, are at risk of catching it. If all household contacts take a single dose of ciprofloxacin, then this can prevent the transmission 9 out of 10 times
 
 ---
 
@@ -500,9 +522,9 @@ Meningitis can kill fast, so if you suspect meningitis, leave all other work and
 
 **Suspect typhoid if a patient has**
 
-1. A history of at least 3 days of fevers or coldness AND a recorded fever (\>37.5°C) today. You MUST record a fever in the clinic to diagnose possible typhoid
-2. A negative MRDT AND no other cause for fever after asking many questions to rule out all other causes (for example URTI, pneumonia, skin infection). Make sure you ask questions about all other conditions before diagnosing typhoid. No-one with these symptoms below should be diagnosed with possible typhoid.
-\- Diarrhoea	\- Cough and Flu 	\- Discharge	\- Skin symptoms	\- Pain on urination
+1.  A history of at least 3 days of fevers or coldness AND a recorded fever (\>37.5°C) today. You MUST record a fever in the clinic to diagnose possible typhoid
+2.  A negative MRDT AND no other cause for fever after asking many questions to rule out all other causes (for example URTI, pneumonia, skin infection). Make sure you ask questions about all other conditions before diagnosing typhoid. No-one with these symptoms below should be diagnosed with possible typhoid.  
+    \- Diarrhoea \- Cough and Flu \- Discharge \- Skin symptoms \- Pain on urination
 
 There is no good test for typhoid. Do not do the Widal test – it is unreliable and is often positive when typhoid is not there and often negative when typhoid is actually there.
 
@@ -513,31 +535,37 @@ Typhoid is impossible to definitively diagnose at a Health Centre level, and so 
 **1\. If a child, do they have any danger signs?**
 
 - IF YES →
-1. Treat as per Danger Signs in Children
-2. Immediately refer to hospital.
+
+1.  Treat as per Danger Signs in Children
+2.  Immediately refer to hospital.
+
 - IF NO → Continue
 
 **2\. Are there any signs of the complications of typhoid? These are:** a. Signs of abdominal perforation? Severe abdominal pain with guarding. b. Signs of a GI bleed? Vomiting blood, or passing melena (very dark/black, sticky faeces) c. Signs of encephalopathy? Confusion or impaired consciousness. d. Shock? Systolic BP \<90 in adults or \<70 in children or cold peripheries.
 
 - IF YES → **Treat as complicated typhoid fever:**
 
-1) Ceftriaxone 100mg/kg IV STAT (max 2g).
-2) Adults: 500ml NaCl 0.9% STAT. Children: 20ml/kg NaCl 0.9% STAT.
-3) Refer to hospital immediately.
+1.  Ceftriaxone 100mg/kg IV STAT (max 2g).
+2.  Adults: 500ml NaCl 0.9% STAT. Children: 20ml/kg NaCl 0.9% STAT.
+3.  Refer to hospital immediately.
+
 - IF NO → **Treat as possible uncomplicated typhoid fever:**
 
-1) Ciprofloxacin
-- 10-19kg – 250mg (½ tablet) BD for 7 days
-- 20-35kg – 500mg (1 tablet) BD for 7 days.
-- if \>35kg – 750mg (1+½ tablet) BD for 7 days
-2) Paracetamol (see dosing section) for 5 days.
-3) Communicate for "possible typhoid".
+1.  Ciprofloxacin
 
-**Communicate for "possible typhoid":**
 
-2) Explain that you are treating possible typhoid but the diagnosis can't be confirmed.
-3) Explain that typhoid is spread by faecal-oral transmission. Discuss the importance of handwashing.
-4) If the patient worsens, they should return and be given Ceftriaxone 1g stat before hospital referral
+    - 10-19kg – 250mg (½ tablet) BD for 7 days
+    - 20-35kg – 500mg (1 tablet) BD for 7 days.
+    - if \>35kg – 750mg (1+½ tablet) BD for 7 days
+
+2.  Paracetamol (see dosing section) for 5 days.
+3.  Communicate for \"possible typhoid\".
+
+**Communicate for \"possible typhoid\":**
+
+2.  Explain that you are treating possible typhoid but the diagnosis can't be confirmed.
+3.  Explain that typhoid is spread by faecal-oral transmission. Discuss the importance of handwashing.
+4.  If the patient worsens, they should return and be given Ceftriaxone 1g stat before hospital referral
 
 ---
 
@@ -563,16 +591,20 @@ Brucellosis treatment ALWAYS needs 2 antibiotics
 
 **First line treatment**
 
-1) Doxycycline 100 mg bd for 6 weeks (84 tablets)
+1.  Doxycycline 100 mg bd for 6 weeks (84 tablets)
+
 - For children under 8 years the dose is 2 mg/kg per dose
 - Remind patients to stay upright for one hour after taking doxycycline
-2) Ciprofloxacin 500 mg bd for 10 days (20 tablets)
+
+2.  Ciprofloxacin 500 mg bd for 10 days (20 tablets)
+
 - Avoid in children under 6 years old
 
 **Second line treatment – Use if first line fails, or if patient develops brucellosis a second time** Lower level facilities without renal function testing available nearby should refer to St. Philips or a hospital for gentamycin treatment. Creatinine should be tested at least every 3 days while on gentamycin, and treatment stopped if creatinine significantly increases.
 
-1) Doxycycline 100 mg bd for 6 weeks (84 tablets)
-2) Gentamicin (5 mg per kg) IV OD for 14 days is an alternative to Ciprofloxacin For a child under 8 years old, give Gentamycin 3.5 mg/kg BD
+1.  Doxycycline 100 mg bd for 6 weeks (84 tablets)
+2.  Gentamicin (5 mg per kg) IV OD for 14 days is an alternative to Ciprofloxacin For a child under 8 years old, give Gentamycin 3.5 mg/kg BD
+
 - IF there are complications such as meningitis or endocarditis, refer to hospital.
 - If pregnant, DO NOT TREAT as doxycycline and gentamycin are contraindicated. Refer to hospital immediately.
 
@@ -594,22 +626,24 @@ Brucellosis treatment ALWAYS needs 2 antibiotics
 
 **1\. Does the patient have signs of pneumonia?**
 
-1. A new cough (or a worsening of a chronic cough) AND at least 2 of the following symptoms:
+1.  A new cough (or a worsening of a chronic cough) AND at least 2 of the following symptoms:
+
 - Fast breathing (RR \> 20 per minute) OR reported difficulty in breathing
 - Crackling sounds in one lung on listening
 - green/bloody sputum
 - fevers (reported or recorded)
 - Chest pain worse on coughing or a deep breath
-- IF NO → The disease is likely to not be pneumonia, consider "other causes of cough" (see next section).
+- IF NO → The disease is likely to not be pneumonia, consider \"other causes of cough\" (see next section).
 - IF YES → Continue to next question
 
 **2\. Are there ANY signs of severe pneumonia?**
 
-1. Very Fast breathing (RR \>30)
-2. Use of chest or neck muscles to breath
-3. Low oxygen levels SpO2 \<92%
-4. Confusion
-5. Systolic BP \<90
+1.  Very Fast breathing (RR \>30)
+2.  Use of chest or neck muscles to breath
+3.  Low oxygen levels SpO2 \<92%
+4.  Confusion
+5.  Systolic BP \<90
+
 - IF YES → **Treat as Severe Pneumonia**
 
 - Give IV ceftriaxone 2g STAT and doxycycline 200mg PO STAT.
@@ -618,18 +652,18 @@ Brucellosis treatment ALWAYS needs 2 antibiotics
 - Communicate: there is a life-threatening chest infection. They must go to hospital.
 - IF NO → **Medicate for Non-Severe pneumonia**
 
-1. Amoxicillin 500mg TDS 5/7
-2. Paracetamol/ibuprofen
-3. All adults with pneumonia should get an HIV test Communicate as non-severe pneumonia.
+1.  Amoxicillin 500mg TDS 5/7
+2.  Paracetamol/ibuprofen
+3.  All adults with pneumonia should get an HIV test Communicate as non-severe pneumonia.
 
 Second line: If no improvement after amoxicillin Give: Non-pregnant: 100mg doxycycline BD 5/7 OR Pregnant: 500mg azithromycin day 1, then 250mg (half tab) once daily for 4 days
 
 **Communicate: non-severe pneumonia**
 
-2. Pneumonia is an infection of the lungs.
-3. If they are not feeling improvement after 3 days, they must come back (the cough can last for weeks) for second-line treatment.
-4. If the cough lasts for more than a month, they must come back, as they will need TB testing.
-5. Avoid smoke, as this damages the lungs. Cook outside with charcoal.
+2.  Pneumonia is an infection of the lungs.
+3.  If they are not feeling improvement after 3 days, they must come back (the cough can last for weeks) for second-line treatment.
+4.  If the cough lasts for more than a month, they must come back, as they will need TB testing.
+5.  Avoid smoke, as this damages the lungs. Cook outside with charcoal.
 
 ---
 
@@ -665,11 +699,11 @@ Explain to the patient that there is infection in the nose and throat or sinuses
 
 The most important causes of chronic cough are:
 
-1. TB
-2. Chronic Obstructive Pulmonary Disease (COPD)
-3. Asthma
-4. Heart Failure
-5. Non-serious causes: post infection (chest infection or URTI), gastro-oesophageal reflux disease (GORD), allergic rhinitis and post-nasal drip.
+1.  TB
+2.  Chronic Obstructive Pulmonary Disease (COPD)
+3.  Asthma
+4.  Heart Failure
+5.  Non-serious causes: post infection (chest infection or URTI), gastro-oesophageal reflux disease (GORD), allergic rhinitis and post-nasal drip.
 
 Consider a chest x-ray in all patients with a chronic cough after TB testing. This can help diagnose the cause of chronic cough if it is not clear.
 
@@ -744,9 +778,11 @@ There may also be:
 - The only thing that will prevent further damage and chest infections is removing ALL smoke.
 - If they smoke: they must immediately stop smoking.
 - If they cook in a smoky room:
-1. Immediately stop cooking indoors. They must cook outside.
-2. Never cook with wood. Instead cook with charcoal as it produces less smoke.
-3. They should use an efficient charcoal stove, as this will produce even less smoke.
+
+1.  Immediately stop cooking indoors. They must cook outside.
+2.  Never cook with wood. Instead cook with charcoal as it produces less smoke.
+3.  They should use an efficient charcoal stove, as this will produce even less smoke.
+
 - The only medications that will help with the symptoms are inhalers. Tablets are only helpful if there is an exacerbation of COPD.
 - Carefully explain to the patient how to use a salbutamol inhaler.
 - Advise them to come back if any worsening of the cough or breathing or if the sputum becomes yellow/green.
@@ -773,7 +809,7 @@ Asthma often develops in childhood, so there will probably be a long history of 
 
 Patients with asthma may have acute asthma attacks. This presents with worsening symptoms:
 
-1) increased difficulty breathing, 2\) increased chest tightness and 3\) increased wheeze. Asthma attacks vary is severity from mild to life-threatening.
+1.  increased difficulty breathing, 2\) increased chest tightness and 3\) increased wheeze. Asthma attacks vary is severity from mild to life-threatening.
 
 If you suspect a patient with a history of asthma and is having an asthma attack:
 
@@ -787,9 +823,10 @@ If you suspect a patient with a history of asthma and is having an asthma attack
 
 If any of these are present:
 
-1. Give 2mg/kg prednisolone PO STAT (max 40mg)
-2. Give 10 puffs of salbutamol inhaler.
-3. Refer immediately to hospital for life-saving treatment.
+1.  Give 2mg/kg prednisolone PO STAT (max 40mg)
+2.  Give 10 puffs of salbutamol inhaler.
+3.  Refer immediately to hospital for life-saving treatment.
+
 - If no signs of a severe or life-threatening asthma attack, treat as mild/moderate asthma attack:
 - Give 4 puffs of salbutamol inhaler. Repeat every 20 mins if needed. AND
 - \<12yrs: 1mg/kg prednisolone OD 3/7 (max 40mg)
@@ -849,9 +886,9 @@ There may also be:
 - Refer to hospital immediately
 - IF NO → **If you suspect heart failure: contact a clinician or doctor.** Heart failure is difficult to diagnose and manage.
 
-1. Medicate as below
-2. Communicate as below
-3. Screen for diabetes and high blood pressure – check a fasting blood sugar.
+1.  Medicate as below
+2.  Communicate as below
+3.  Screen for diabetes and high blood pressure – check a fasting blood sugar.
 
 **Medicate:** Give medication for ONE WEEK only, then if heart failure is controlled can give medication for 1 month
 
@@ -899,7 +936,7 @@ Drugs to avoid when you have heart failure:
 - Abdomen should be non-tender, or mild tenderness only in the upper part of the abdomen.
 - If abdomen is extremely tender, or rigid give ceftriaxone 1g STAT IM/IV and refer to hospital
 
-If the patient has diarrhea,  is vomiting or has fevers, consider another diagnosis and do not just treat for ulcers. If any patient has vomiting and severe abdominal pain, they should be referred immediately to hospital.
+If the patient has diarrhea, is vomiting or has fevers, consider another diagnosis and do not just treat for ulcers. If any patient has vomiting and severe abdominal pain, they should be referred immediately to hospital.
 
 ### Communicate
 
@@ -912,14 +949,16 @@ If the patient has diarrhea,  is vomiting or has fevers, consider another diagno
 
 ### Medicate
 
-1) First, if they have not been treated yet give MAGNESIUM tablets, 2 tabs TDS for 5/7
-2) If they return with no improvement, then give OMEPRAZOLE 20mg BD for 7/7
-3) If there is still no improvement after both magnesium trisilicate, and Omeprazole, give triple therapy of
+1.  First, if they have not been treated yet give MAGNESIUM tablets, 2 tabs TDS for 5/7
+2.  If they return with no improvement, then give OMEPRAZOLE 20mg BD for 7/7
+3.  If there is still no improvement after both magnesium trisilicate, and Omeprazole, give triple therapy of
+
 - OMEPRAZOLE 20mg BD for 7/7
 - METRONIDAZOLE 400mg TDS for 7/7
 - AMOXICILLIN 500mg TDS for 7/7
-4) For those who have had multiple treatments of triple therapy, and ulcer keeps recurring then trial OMEPRAZOLE 20mg at night for 1 month and then review
-5) If there is still no improvement, refer to hospital for further investigation and management
+
+4.  For those who have had multiple treatments of triple therapy, and ulcer keeps recurring then trial OMEPRAZOLE 20mg at night for 1 month and then review
+5.  If there is still no improvement, refer to hospital for further investigation and management
 
 ---
 
@@ -955,12 +994,14 @@ If the patient has diarrhea,  is vomiting or has fevers, consider another diagno
 
 **Communicate:**
 
-1. Most diarrhoea is caused by infections, which can usually be prevented by taking simple steps:
+1.  Most diarrhoea is caused by infections, which can usually be prevented by taking simple steps:
+
 - Do not cook food for other people whilst you have diarrhoea.
 - Always wash your hands with soap after going to the toilet.
 - Always wash your hands with soap before eating any food.
 - Always boil water for drinking, including if it is from a bore hole.
-2. Come back if diarrhoea worsens or develops blood.
+
+2.  Come back if diarrhoea worsens or develops blood.
 
 ---
 
@@ -986,8 +1027,8 @@ If the patient has diarrhea,  is vomiting or has fevers, consider another diagno
 - IF NO → Continue
 -
 
-**5\. Is there deep pain during sexual intercourse OR/and abnormal vaginal discharge?**
-**Note:** No-one with discharge should ever be diagnosed with a UTI, and no-one should receive the diagnosis of both STI and UTI
+**5\. Is there deep pain during sexual intercourse OR/and abnormal vaginal discharge?**  
+ **Note:** No-one with discharge should ever be diagnosed with a UTI, and no-one should receive the diagnosis of both STI and UTI
 
 - IF YES → **Medicate for PID:**
 - Ceftriaxone 500mg IV/IM STAT
@@ -1004,7 +1045,7 @@ If the patient has diarrhea,  is vomiting or has fevers, consider another diagno
 
 **5\. Do urinalysis.**
 
-- Nitrites positive → Treat as UTI. See "UTIs in adults" guideline.
+- Nitrites positive → Treat as UTI. See \"UTIs in adults\" guideline.
 - Nitrites negative → Continue
 
 Often woman with sexually transmitted infections have pain on urination or burning urine. If a women has had pain for more than 2 weeks and pain on urination, treat them as an STI NOT a UTI
@@ -1021,7 +1062,7 @@ Often woman with sexually transmitted infections have pain on urination or burni
 
 **1\. Is there also lower abdominal pain?**
 
-- IF YES → Instead follow the guideline for "Lower abdominal pain"
+- IF YES → Instead follow the guideline for \"Lower abdominal pain\"
 - IF NO → Continue
 
 **2\. Is there significant itch AND/OR white discharge without a bad smell? If there is a white discharge bad smell, proceed to bacterial vagniosis treatment**
@@ -1041,15 +1082,15 @@ Often woman with sexually transmitted infections have pain on urination or burni
 - This is probably an infection of the vagina, but not a sexually transmitted infection
 - When washing your vagina, do not wash internally, as this causes BV.
 
-- IF there is a discharge of any colour that is not white or cream, for example yellow or greenish or brownish discharge discharge AND the discharge a bad smell, OR if there is NO IMPROVEMENT after treating for either Vaginal Candidiasis or bacterial vaginosis, then **Treat as Sexually Transmitted Infection**
-→ **Medicate**
+- IF there is a discharge of any colour that is not white or cream, for example yellow or greenish or brownish discharge discharge AND the discharge a bad smell, OR if there is NO IMPROVEMENT after treating for either Vaginal Candidiasis or bacterial vaginosis, then **Treat as Sexually Transmitted Infection**  
+  → **Medicate**
 - Ceftriaxone 500mg IV/M stat plus Doxycycline 100mg BD 7/7
 - (If pregnant, do not give doxycycline. Instead give Azithromycin 1g STAT and then 500mg OD 2/7)
 - Treat any sexual partners with Ceftriaxone 500mg IV/IM STAT \+ Doxycycline 100mg BD 7/7.
 - Communicate:**\- ALWAYS TEST FOR HIV after diagnosis STI or PID**
-    - This is probably a sexually transmitted infection.
-    - Use a condom for 2 weeks while you and your partner(s) are treated. This will prevent reinfection.
-    - Come back if not improving.
+  - This is probably a sexually transmitted infection.
+  - Use a condom for 2 weeks while you and your partner(s) are treated. This will prevent reinfection.
+  - Come back if not improving.
 
 ---
 
@@ -1115,9 +1156,10 @@ This is likely caused by either Herpes Simplex Virus or Chancroids. Both are STI
 
 ### Symptoms
 
-1) **Primary Syphilis:** Painless ulcer or multiple ulcers on the genitals or anus. If not treated this will disappear in 3-6 weeks with or without treatment.
-2) **Secondary Syphilis:** If not treated, primarySyphilis progresses to Secondary Syphilis. The patient may develop a wide range of symptoms including fevers, swollen lymph nodes and a a rash which could involve any part of body including the palms and soles of feet.
-3) **Tertiary Syphilis:** If secondary syphilis remains untreated the infection goes on to a Tertiary phase which affects brain, eye, heart and nerves and causes a range of symptoms. Tertiary syphilis is rare.
+1.  **Primary Syphilis:** Painless ulcer or multiple ulcers on the genitals or anus. If not treated this will disappear in 3-6 weeks with or without treatment.
+2.  **Secondary Syphilis:** If not treated, primarySyphilis progresses to Secondary Syphilis. The patient may develop a wide range of symptoms including fevers, swollen lymph nodes and a a rash which could involve any part of body including the palms and soles of feet.
+3.  **Tertiary Syphilis:** If secondary syphilis remains untreated the infection goes on to a Tertiary phase which affects brain, eye, heart and nerves and causes a range of symptoms. Tertiary syphilis is rare.
+
 - If you suspect syphilis, test RPR
 - ONLY PATIENTS WITH POSITIVE RPR TEST should be treated (See medicate)
 - Communicate for syphilis in a similar way to other STIs
@@ -1159,7 +1201,7 @@ Scabies is a disease caused by a small mite, which lives on the skin, burrows in
 
 ### MEDICATE
 
-1. **First line** Give ivermectin to the patient AND all household contacts.
+1.  **First line** Give ivermectin to the patient AND all household contacts.
 
 - 5-14kg (approx. 6m-2yrs): 3mg ONCE ONLY (¼ tablet)
 - 15-24kg (approx. 3-7yrs): 6mg ONCE ONLY (½ tablet)
@@ -1168,13 +1210,14 @@ Scabies is a disease caused by a small mite, which lives on the skin, burrows in
 - 51-65kg (approx. short or thin adults): 24mg ONCE ONLY (2 tablets)
 - 66-79kg (approx. tall or fat adults): 30mg ONCE ONLY (2 and ½ tablets)
 - 80-100kg (approx. tall and fat adults): 36mg ONCE ONLY (3 tablets)
-2. **Second line BBE CREAM – IF IVERMECTIN NOT AVAILABLE** Step 1\) PATIENT SHOULD WASH and dry themselves in the morning. After drying, they should apply Benzyl Benzoate (BBE) cream to the whole body below the neck. Step 2\) In the evening they should NOT WASH, and apply BBE cream again before sleeping with the cream Step 3\) The next morning they should wash the cream off and not use the cream again
+
+2.  **Second line BBE CREAM – IF IVERMECTIN NOT AVAILABLE** Step 1\) PATIENT SHOULD WASH and dry themselves in the morning. After drying, they should apply Benzyl Benzoate (BBE) cream to the whole body below the neck. Step 2\) In the evening they should NOT WASH, and apply BBE cream again before sleeping with the cream Step 3\) The next morning they should wash the cream off and not use the cream again
 
 Children under 1 – BBE cream should be diluted to 1 part cream, 3 parts waters Children 1-5 – BBE cream should be diluted to 1 part cream, 1 parts water 5 years and older – BBE cream should be used directly from the bottle and not diluted
 
-3. Give an antihistamine for the itch. 2-5yrs: Cetirizine 5mg (½ tablet) OD 7/7, \>6yrs: Cetirizine 10mg OD 7/7
+3.  Give an antihistamine for the itch. 2-5yrs: Cetirizine 5mg (½ tablet) OD 7/7, \>6yrs: Cetirizine 10mg OD 7/7
 
-4. Check for any signs of bacterial skin infection. If so, treat accordingly.
+4.  Check for any signs of bacterial skin infection. If so, treat accordingly.
 
 ---
 
@@ -1196,9 +1239,10 @@ Children under 1 – BBE cream should be diluted to 1 part cream, 3 parts waters
 
 - IF NO → Consider Other Diagnosis, for example:
 
-1) Fungal Skin Infection
-2) Reactive condition e.g. allergies or eczema
-3) Scabies, Jiggers or other parasite
+1.  Fungal Skin Infection
+2.  Reactive condition e.g. allergies or eczema
+3.  Scabies, Jiggers or other parasite
+
 - IF YES → Continue
 
 **2\. Are any danger signs present?**
@@ -1213,24 +1257,31 @@ Children under 1 – BBE cream should be diluted to 1 part cream, 3 parts waters
 
 - IF YES →
 
-1. Give IM Ceftriaxone STAT
-- Adults give 2g
-- 1 month to 5 years give 50mg/kg IM Max 1g
-2. Refer to hospital immediately
+1.  Give IM Ceftriaxone STAT
+
+
+    - Adults give 2g
+    - 1 month to 5 years give 50mg/kg IM Max 1g
+
+2.  Refer to hospital immediately
+
 - IF NO → Continue
 
 **3\. Is there evidence of an abscess \- a raised lump with movable pus inside?**
 
 - IF YES →
-1) Clean Abscess area
-2) If Abscess is large, use local anaesthetic
-3) Use a needle or razor blade to make a SMALL puncture in the abscess. No more than 2mm
-4) DO NOT squeeze the abscess. Gently probe it.
-5) Clean and cover puncture site
-6) COMMUNICATE and MEDICATE as below
+
+1.  Clean Abscess area
+2.  If Abscess is large, use local anaesthetic
+3.  Use a needle or razor blade to make a SMALL puncture in the abscess. No more than 2mm
+4.  DO NOT squeeze the abscess. Gently probe it.
+5.  Clean and cover puncture site
+6.  COMMUNICATE and MEDICATE as below
+
 - IF NO →
-1) Communicate for skin infection
-2) Medicate for skin infection
+
+1.  Communicate for skin infection
+2.  Medicate for skin infection
 
 ### Communicate
 
@@ -1285,28 +1336,32 @@ If fungal infections are improving but DO not cure, add another 4 weeks of Fluco
 
 ### First Aid
 
-1. Treat life-threatening problems first. Airway, Breathing, Circulation\!
-2. Apply pressure to any bleeding areas
-3. Give pain relief medication, both systemically and with local anaesthetic at the site if required
-4. Take history and establish tetanus immunisation status. Any loss of sensation or other sign of tetanus?
-5. Wash wound with sterile water or normal saline
+1.  Treat life-threatening problems first. Airway, Breathing, Circulation\!
+2.  Apply pressure to any bleeding areas
+3.  Give pain relief medication, both systemically and with local anaesthetic at the site if required
+4.  Take history and establish tetanus immunisation status. Any loss of sensation or other sign of tetanus?
+5.  Wash wound with sterile water or normal saline
 
 ### Decision Flow:
 
 **1\. Is there any possibility of damage to deep structures? (Think arteries, veins, nerves, tendons, ligaments, joints & bones)**
 
 - IF YES →
-1) Compress wound if bleeding
-2) Give 2g ceftriaxone IM stat
-3) Refer immediately to hospital
+
+1.  Compress wound if bleeding
+2.  Give 2g ceftriaxone IM stat
+3.  Refer immediately to hospital
+
 - IF NO → Continue
 
 **2\. Is there any possibility of glass, plastic or metal remaining inside the wound?**
 
 - IF YES →
-1) Compress wound if bleeding
-2) Give 2g ceftriaxone IM stat
-3) Refer immediately to hospital for x-ray
+
+1.  Compress wound if bleeding
+2.  Give 2g ceftriaxone IM stat
+3.  Refer immediately to hospital for x-ray
+
 - IF NO → Continue
 
 **3\. Is the wound from an animal bite?**
@@ -1317,29 +1372,36 @@ If fungal infections are improving but DO not cure, add another 4 weeks of Fluco
 **4\. Is the wound from a human bite?**
 
 - IF YES →
-1) Do not suture
-2) Communicate as below
-3) Medicate as per human bite below
+
+1.  Do not suture
+2.  Communicate as below
+3.  Medicate as per human bite below
+
 - IF NO → Continue
 
 **5\. Does the wound look infected (red around edges, warm, increasing pain after some days)**
 
 - IF YES →
-1) Do not suture
-2) Communicate as below
-3) Medicate as per infected wound below
-4) Ask patient to return after 2 days for review
+
+1.  Do not suture
+2.  Communicate as below
+3.  Medicate as per infected wound below
+4.  Ask patient to return after 2 days for review
+
 - IF NO → Continue
 
 **6\. More than 12h old and large, requiring more than 8 sutures**
 
 - IF YES →
-1) Do not suture
-2) Refer to hospital immediately for medical officer review and delayed suture
+
+1.  Do not suture
+2.  Refer to hospital immediately for medical officer review and delayed suture
+
 - IF NO →
-1) Suture if necessary
-2) Communicate as below
-3) Medicate as per regular wound below
+
+1.  Suture if necessary
+2.  Communicate as below
+3.  Medicate as per regular wound below
 
 ### Communicate
 
@@ -1382,16 +1444,17 @@ Establish the time and body-site of the bite, and snake species if known.
 
 **Are there any signs of toxicity?**
 
-1. Drooping of the eyelids or difficulty keeping eyes open
-2. Abnormal eye movements or double vision
-3. Difficulty swallowing or talking or pooling of saliva.
-4. Weakness or reduced consciousness
-5. Difficulty breathing.
-6. Abnormal bleeding from anywhere
-7. Blood in the urine on urine dipstick (only do dipstick once on initial presentation)
-8. Any swelling or severe pain at the site of the bite or close to the bite
-9. Pulse \>110 or Systolic BP \<90 in adults
+1.  Drooping of the eyelids or difficulty keeping eyes open
+2.  Abnormal eye movements or double vision
+3.  Difficulty swallowing or talking or pooling of saliva.
+4.  Weakness or reduced consciousness
+5.  Difficulty breathing.
+6.  Abnormal bleeding from anywhere
+7.  Blood in the urine on urine dipstick (only do dipstick once on initial presentation)
+8.  Any swelling or severe pain at the site of the bite or close to the bite
+9.  Pulse \>110 or Systolic BP \<90 in adults
 10. Cold fingers or toes
+
 - IF YES → Continue to WBCT test
 - IF NO → Continue to WBCT test
 
@@ -1407,12 +1470,12 @@ Establish the time and body-site of the bite, and snake species if known.
 
 **If NO signs of toxicity AND WBCT negative**
 
-1. Wash the wound site and remove clothes or jewellery around the site.
-2. Keep the patient as still as possible.
-3. Wash eyes for 2 minutes continuously with water if venom entered the eyes.
-4. Observe the patient for at least 8 hours from the time of the bite.
-5. Recheck the signs and symptoms of severe toxicity every hour.
-6. Give pain relief as needed with paracetamol and tramadol ONLY. (NO Ibuprofen/Diclofenac)
+1.  Wash the wound site and remove clothes or jewellery around the site.
+2.  Keep the patient as still as possible.
+3.  Wash eyes for 2 minutes continuously with water if venom entered the eyes.
+4.  Observe the patient for at least 8 hours from the time of the bite.
+5.  Recheck the signs and symptoms of severe toxicity every hour.
+6.  Give pain relief as needed with paracetamol and tramadol ONLY. (NO Ibuprofen/Diclofenac)
 
 DO NOT put any torniquet
 
@@ -1426,12 +1489,13 @@ For diagnosis of coagulopathy following snakebite envenoming
 
 **What you will need:**
 
-1. Syringe, gloves, tourniquet, clean glass bottle
-2. Take 2ml blood sample
-3. Put 2ml blood in clean, dry glass bottle
-4. Leave for 20 minutes \- DO NOT shake or move
-5. After 20 minutes, gently tilt bottle
-6. Results:
+1.  Syringe, gloves, tourniquet, clean glass bottle
+2.  Take 2ml blood sample
+3.  Put 2ml blood in clean, dry glass bottle
+4.  Leave for 20 minutes \- DO NOT shake or move
+5.  After 20 minutes, gently tilt bottle
+6.  Results:
+
 - NEGATIVE: Blood clots and stays solid when tilted
 - POSITIVE: Blood remains liquid when tilted
 
@@ -1461,8 +1525,9 @@ For diagnosis of coagulopathy following snakebite envenoming
 - Communicate (as below)
 - Check fasting glucose (see diabetes)
 - Start medication ONLY if the patient
-1) smokes
-2) has diabetes
+
+1.  smokes
+2.  has diabetes
 
 **Systolic less than 139 and Diastolic less than 89** → **No hypertension**
 
@@ -1471,9 +1536,10 @@ For diagnosis of coagulopathy following snakebite envenoming
 
 ### Communicate
 
-1) Eat less salt and Royco (has high salt content)
-2) Do exercise e.g. walking fast and digging
-3) Reduce weight through exercise and eating smaller portions of food
+1.  Eat less salt and Royco (has high salt content)
+2.  Do exercise e.g. walking fast and digging
+3.  Reduce weight through exercise and eating smaller portions of food
+
 - They will likely have hypertension for life, they will never be cured completely
 - The blood pressure must reduce to protect them from heart, brain, kidney and eye disease.
 - They will need to be reviewed every month
@@ -1483,11 +1549,11 @@ For diagnosis of coagulopathy following snakebite envenoming
 
 Control means that BP \<140/85. If blood pressure is controlled, continue current medication. If not, add in steps as below. If a medication causes side effects, stop it and move to next step.
 
-1. Start bendroflumethiazide 2.5mg OD PO for 1/12
-2. If no control after 1 month, add nifedipine 20mg PO BD
-3. If no control after adding nifedipine for 1 month, increase to nifedipine 40mg PO BD
-4. If still not adequately controlled on bendroflumathiazide and 40mg nifedipine, add propranolol 40mg PO BD
-5. If no control on three medications bendroflumathiazide, nifedipine and propranolol, refer to hospital.
+1.  Start bendroflumethiazide 2.5mg OD PO for 1/12
+2.  If no control after 1 month, add nifedipine 20mg PO BD
+3.  If no control after adding nifedipine for 1 month, increase to nifedipine 40mg PO BD
+4.  If still not adequately controlled on bendroflumathiazide and 40mg nifedipine, add propranolol 40mg PO BD
+5.  If no control on three medications bendroflumathiazide, nifedipine and propranolol, refer to hospital.
 
 If systolic blood pressure is \<120, stop one medication and review in one month
 
@@ -1502,8 +1568,8 @@ If systolic blood pressure is \<120, stop one medication and review in one month
 
 Diagnose diabetes if:
 
-1. the patient has eaten that day and has a RANDOM BLOOD SUGAR LEVEL (BSL) over 11.0mmol
-2. the patient has not eaten that day since midnight and has a FASTING BSL over 7.0 mmol
+1.  the patient has eaten that day and has a RANDOM BLOOD SUGAR LEVEL (BSL) over 11.0mmol
+2.  the patient has not eaten that day since midnight and has a FASTING BSL over 7.0 mmol
 
 If the patient is UNDER 40, then refer immediately to a hospital, as it is probably type 1 diabetes that can only be treated with insulin. If patient is OVER 40, assume type 2 diabetes. The most important part of treatment is lifestyle change. Reducing sugar intake and reducing weight.
 
@@ -1619,9 +1685,9 @@ Test for HIV if not tested in the last 6 months. If positive refer to Hospital u
 
 **Give one of the following diagnosis**
 
-1) Diagnose and treat the underlying condition which causes headache, if any present
-2) Tension headache if no symptoms other than headache. The diagnosis of tension headache can often be a secondary diagnosis, where the first diagnosis doesn’t have headache as a possible symptom
-3) Migraine if nausea, or strange visual symptoms (loss of vision, flashing lights)
+1.  Diagnose and treat the underlying condition which causes headache, if any present
+2.  Tension headache if no symptoms other than headache. The diagnosis of tension headache can often be a secondary diagnosis, where the first diagnosis doesn’t have headache as a possible symptom
+3.  Migraine if nausea, or strange visual symptoms (loss of vision, flashing lights)
 
 ### Communicate
 
@@ -1669,20 +1735,22 @@ Allergies are caused by things in our environment which irritate us. Usually all
 
 Diagnose allergy if the patient has
 
-1) Had similar symptoms in the past AND 2\) Has no fever, or signs of other illness AND
-2) Has two or more of the following symptoms
+1.  Had similar symptoms in the past AND 2\) Has no fever, or signs of other illness AND
+2.  Has two or more of the following symptoms
+
 - Flu (runny nose) \- A red, raised rash \- Itchy or teary eyes \- Sneezing \- dry cough
 
 ### Communicate
 
-1) AVOID whatever causes the allergy, whether long grass, or cats or smoke
-2) Avoid itching eyes and body as much as possible
+1.  AVOID whatever causes the allergy, whether long grass, or cats or smoke
+2.  Avoid itching eyes and body as much as possible
 
 ### Medicate (Only give to patients over 2 years old)
 
 - Patients should not take medication routinely, but only when allergy symptoms start
-1) Chlorpheniramine 4mg PO TDS for 5/7 (6 years \+) OR
-2) Cetirizine 5mg PO OD for 5/7 (2-5 years old) OR Cetirizine 10mg PO OD for 5/7 (6 years \+)
+
+1.  Chlorpheniramine 4mg PO TDS for 5/7 (6 years \+) OR
+2.  Cetirizine 5mg PO OD for 5/7 (2-5 years old) OR Cetirizine 10mg PO OD for 5/7 (6 years \+)
 
 ---
 
@@ -1696,14 +1764,14 @@ Contributing factors – \- Low mood, or depression \- Not eating enough food, o
 
 ### Communicate
 
-1. Start drinking more water. 6 to 8 cups a day minimum
-2. Eat more fruits and greens (any type)
-3. Increase exercise, start walking or biking rather than taking bodas or other vehicles
+1.  Start drinking more water. 6 to 8 cups a day minimum
+2.  Eat more fruits and greens (any type)
+3.  Increase exercise, start walking or biking rather than taking bodas or other vehicles
 
 ### Medicate
 
-1. BISACODYL 10mg bd for 3 days
-2. (If abdominal pain is present only) PARACETAMOL 1g tds for 3 days
+1.  BISACODYL 10mg bd for 3 days
+2.  (If abdominal pain is present only) PARACETAMOL 1g tds for 3 days
 
 ---
 
@@ -1762,29 +1830,29 @@ Ugandan Guidelines now recommend 8 visits, but 4 visits should be minimum \- 1 p
 
 ### Step 1\. Patient holds nose firmly
 
-1. Sit up straight and tip head slightly forward NOT BACK
-2. Use thumb and second finger to firmly pinch halfway up the nose
-3. Keep pinching for a full 10 minutes without stopping
+1.  Sit up straight and tip head slightly forward NOT BACK
+2.  Use thumb and second finger to firmly pinch halfway up the nose
+3.  Keep pinching for a full 10 minutes without stopping
 
 ### Step 2\. Vital sign assessment (While patient is holding nose)
 
-1. Check BP and pulse. If above 180 Systolic, give Nifedipine 40mg Stat and refer to hospital
-2. If pulse above 110 BPM, or BP below 90 systolic, give 1L Normal Saline stat and refer to hospital
-3. Check for anaemia. If present refer to hospital immediately
+1.  Check BP and pulse. If above 180 Systolic, give Nifedipine 40mg Stat and refer to hospital
+2.  If pulse above 110 BPM, or BP below 90 systolic, give 1L Normal Saline stat and refer to hospital
+3.  Check for anaemia. If present refer to hospital immediately
 
 ### Step 3 (If step 1 fails)
 
-1. Soak a small 5cm long piece of cotton wool in adrenaline, and pack in the front of the nostril. Don't push the cotton wool far back.
-2. Patient pinches their nose for a further 10 minutes as per step 1
-3. Repeat Vital sign assessment
+1.  Soak a small 5cm long piece of cotton wool in adrenaline, and pack in the front of the nostril. Don't push the cotton wool far back.
+2.  Patient pinches their nose for a further 10 minutes as per step 1
+3.  Repeat Vital sign assessment
 
 If bleeding does not stop, patient should be sent to hospital while continuing to hold their nose, and the cotton wool should remain in the nose.
 
 If bleeding stops, carefully remove cotton wool before patient goes home, and advise patient
 
-1. Not to blow their nose for the next 3 days
-2. Not to put their finger into their nose
-3. Not to lift heavy items for the next 3 days
+1.  Not to blow their nose for the next 3 days
+2.  Not to put their finger into their nose
+3.  Not to lift heavy items for the next 3 days
 
 ---
 
@@ -1792,8 +1860,8 @@ If bleeding stops, carefully remove cotton wool before patient goes home, and ad
 
 These two important messages should be given to all patients.
 
-1. REDUCE SUGAR (biscuits, sodas, sweets, juice, tea with sugar). If patients want to take sugary food and drink, it is better they take it during mealtimes, rather than snacks between meals.
-2. BRUSH TWICE A DAY, for 2 minutes each time. Everyone above 6 months old should have their teeth brushed, or brush their own teeth using toothpaste. 'ABC Dent' and 'Fresh Up' brands of toothpaste are OK, more expensive types are not necessary.
+1.  REDUCE SUGAR (biscuits, sodas, sweets, juice, tea with sugar). If patients want to take sugary food and drink, it is better they take it during mealtimes, rather than snacks between meals.
+2.  BRUSH TWICE A DAY, for 2 minutes each time. Everyone above 6 months old should have their teeth brushed, or brush their own teeth using toothpaste. 'ABC Dent' and 'Fresh Up' brands of toothpaste are OK, more expensive types are not necessary.
 
 ### Dental care for different ages
 
@@ -1828,114 +1896,114 @@ These two important messages should be given to all patients.
 
 ### Antibiotics:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Amoxicillin | Safe | Safe |  |  |
-| Azithromycin | Safe | Safe |  |  |
-| Cefalexin | Safe | Safe |  |  |
-| Ceftriaxone | Safe | Safe |  | Caution in babies \<1m |
-| Ciprofloxacin | AVOID | Safe |  | Can cause tendon problems |
-| Cotrimoxazole | AVOID unless HIV positive | Safe |  |  |
-| Doxycycline | AVOID | AVOID |  | AVOID in children \<12yrs |
-| Metronidazole | Avoid high doses | Avoid high doses |  | Avoid alcohol whilst taking |
+| Drug          | Pregnancy                 | Breastfeeding    | Contraindications | Cautions                    |
+| :------------ | :------------------------ | :--------------- | :---------------- | :-------------------------- |
+| Amoxicillin   | Safe                      | Safe             |                   |                             |
+| Azithromycin  | Safe                      | Safe             |                   |                             |
+| Cefalexin     | Safe                      | Safe             |                   |                             |
+| Ceftriaxone   | Safe                      | Safe             |                   | Caution in babies \<1m      |
+| Ciprofloxacin | AVOID                     | Safe             |                   | Can cause tendon problems   |
+| Cotrimoxazole | AVOID unless HIV positive | Safe             |                   |                             |
+| Doxycycline   | AVOID                     | AVOID            |                   | AVOID in children \<12yrs   |
+| Metronidazole | Avoid high doses          | Avoid high doses |                   | Avoid alcohol whilst taking |
 
 ### Antifungals:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Clotrimazole | Safe | Safe |  |  |
-| Fluconazole | AVOID if possible | Safe |  |  |
+| Drug         | Pregnancy         | Breastfeeding | Contraindications | Cautions |
+| :----------- | :---------------- | :------------ | :---------------- | :------- |
+| Clotrimazole | Safe              | Safe          |                   |          |
+| Fluconazole  | AVOID if possible | Safe          |                   |          |
 
 ### Antimalarials:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Coartem | Safe | Safe |  |  |
-| Artesunate | Safe | Safe |  |  |
-| Artemether | Safe | Safe |  |  |
+| Drug       | Pregnancy | Breastfeeding | Contraindications | Cautions |
+| :--------- | :-------- | :------------ | :---------------- | :------- |
+| Coartem    | Safe      | Safe          |                   |          |
+| Artesunate | Safe      | Safe          |                   |          |
+| Artemether | Safe      | Safe          |                   |          |
 
 ### Antiparasitic:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Ivermectin | AVOID | AVOID |  |  |
-| Albendazole | AVOID in first trimester | Safe |  |  |
-| Mebendazole | Safe | Safe |  |  |
-| BBE Cream | AVOID | AVOID |  |  |
+| Drug        | Pregnancy                | Breastfeeding | Contraindications | Cautions |
+| :---------- | :----------------------- | :------------ | :---------------- | :------- |
+| Ivermectin  | AVOID                    | AVOID         |                   |          |
+| Albendazole | AVOID in first trimester | Safe          |                   |          |
+| Mebendazole | Safe                     | Safe          |                   |          |
+| BBE Cream   | AVOID                    | AVOID         |                   |          |
 
 ### Diarrhoea:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| ORS | Safe | Safe |  |  |
-| Zinc | For use in children only | For use in children only |  |  |
+| Drug | Pregnancy                | Breastfeeding            | Contraindications | Cautions |
+| :--- | :----------------------- | :----------------------- | :---------------- | :------- |
+| ORS  | Safe                     | Safe                     |                   |          |
+| Zinc | For use in children only | For use in children only |                   |          |
 
 ### Constipation:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Bisacodyl | Safe | Safe | Bowel obstruction | Avoid prolonged use |
+| Drug      | Pregnancy | Breastfeeding | Contraindications | Cautions            |
+| :-------- | :-------- | :------------ | :---------------- | :------------------ |
+| Bisacodyl | Safe      | Safe          | Bowel obstruction | Avoid prolonged use |
 
 ### Ulcers:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Omeprazole | Safe | Safe |  | Increased susceptibility to typhoid & GI infections. |
-| Magnesium | Safe | Safe |  |  |
+| Drug       | Pregnancy | Breastfeeding | Contraindications | Cautions                                             |
+| :--------- | :-------- | :------------ | :---------------- | :--------------------------------------------------- |
+| Omeprazole | Safe      | Safe          |                   | Increased susceptibility to typhoid & GI infections. |
+| Magnesium  | Safe      | Safe          |                   |                                                      |
 
 ### Hypertension:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Bendroflumethiazide | AVOID | Safe |  |  |
-| Nifedipine | Safe | Safe | Heart failure | Leg swelling |
-| Propranolol | Safe | Safe | Asthma |  |
-| Captopril | AVOID | AVOID |  | Do not use with NSAIDs |
+| Drug                | Pregnancy | Breastfeeding | Contraindications | Cautions               |
+| :------------------ | :-------- | :------------ | :---------------- | :--------------------- |
+| Bendroflumethiazide | AVOID     | Safe          |                   |                        |
+| Nifedipine          | Safe      | Safe          | Heart failure     | Leg swelling           |
+| Propranolol         | Safe      | Safe          | Asthma            |                        |
+| Captopril           | AVOID     | AVOID         |                   | Do not use with NSAIDs |
 
 ### Asthma:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Salbutamol inhaler | Safe | Safe |  |  |
+| Drug               | Pregnancy | Breastfeeding | Contraindications | Cautions |
+| :----------------- | :-------- | :------------ | :---------------- | :------- |
+| Salbutamol inhaler | Safe      | Safe          |                   |          |
 
 ### Steroids:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Prednisolone | Safe in short courses | Safe if dose is \<40mg a day |  | Heart failure, ulcers, leg swelling. Avoid long courses. |
-| IV hydrocortisone | Emergencies only | Emergencies only |  |  |
+| Drug              | Pregnancy             | Breastfeeding                | Contraindications | Cautions                                                 |
+| :---------------- | :-------------------- | :--------------------------- | :---------------- | :------------------------------------------------------- |
+| Prednisolone      | Safe in short courses | Safe if dose is \<40mg a day |                   | Heart failure, ulcers, leg swelling. Avoid long courses. |
+| IV hydrocortisone | Emergencies only      | Emergencies only             |                   |                                                          |
 
 ### Diabetes:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Metformin | Safe | Safe |  |  |
-| Glibenclamide | AVOID | AVOID |  | Risk of hypoglycaemia |
-| Insulin | Safe | Safe |  |  |
+| Drug          | Pregnancy | Breastfeeding | Contraindications | Cautions              |
+| :------------ | :-------- | :------------ | :---------------- | :-------------------- |
+| Metformin     | Safe      | Safe          |                   |                       |
+| Glibenclamide | AVOID     | AVOID         |                   | Risk of hypoglycaemia |
+| Insulin       | Safe      | Safe          |                   |                       |
 
 ### Analgaesia & antipyretics
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Paracetamol | Safe | Safe | Liver disease |  |
-| Ibuprofen | AVOID | Safe | Heart failure, active ulcers, kidney injury | History of ulcers and older people. Do no use with captopril (or ACE inhibitors) |
-| Diclofenac | AVOID | AVOID | Heart failure, active ulcers, kidney injury | History of ulcers and older people. Do not use with captopril (or ACE inhibitors) |
-| Tramadol | AVOID | Safe |  | Confusion and older people |
+| Drug        | Pregnancy | Breastfeeding | Contraindications                           | Cautions                                                                          |
+| :---------- | :-------- | :------------ | :------------------------------------------ | :-------------------------------------------------------------------------------- |
+| Paracetamol | Safe      | Safe          | Liver disease                               |                                                                                   |
+| Ibuprofen   | AVOID     | Safe          | Heart failure, active ulcers, kidney injury | History of ulcers and older people. Do no use with captopril (or ACE inhibitors)  |
+| Diclofenac  | AVOID     | AVOID         | Heart failure, active ulcers, kidney injury | History of ulcers and older people. Do not use with captopril (or ACE inhibitors) |
+| Tramadol    | AVOID     | Safe          |                                             | Confusion and older people                                                        |
 
 ### Cough:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| Piritex baby | For children \<1yrs only | For children \<1yrs only |  |  |
-| Cough linctus | Safe | Safe | Children \<1yrs |  |
+| Drug          | Pregnancy                | Breastfeeding            | Contraindications | Cautions |
+| :------------ | :----------------------- | :----------------------- | :---------------- | :------- |
+| Piritex baby  | For children \<1yrs only | For children \<1yrs only |                   |          |
+| Cough linctus | Safe                     | Safe                     | Children \<1yrs   |          |
 
 ### Fluids:
 
-| Drug | Pregnancy | Breastfeeding | Contraindications | Cautions |
-| :---- | :---- | :---- | :---- | :---- |
-| 0.9% NaCl / Normal Saline | Safe | Safe | Heart failure |  |
-| Ringers Lactate | Safe | Safe |  | Avoid large STAT volumes, due to potassium |
-| 25% dextrose | Safe | Safe |  |  |
+| Drug                      | Pregnancy | Breastfeeding | Contraindications | Cautions                                   |
+| :------------------------ | :-------- | :------------ | :---------------- | :----------------------------------------- |
+| 0.9% NaCl / Normal Saline | Safe      | Safe          | Heart failure     |                                            |
+| Ringers Lactate           | Safe      | Safe          |                   | Avoid large STAT volumes, due to potassium |
+| 25% dextrose              | Safe      | Safe          |                   |                                            |
 
 ---
 
@@ -1945,26 +2013,26 @@ These two important messages should be given to all patients.
 
 Dose below can be taken every 4 – 6 hours as required; maximum 3 doses per day.
 
-| Age | Tablets | Syrup |
-| :---- | :---- | :---- |
-| 3-5 months | \- | 60mg |
-| 6-23 months | 125mg (1/4 tablet) | 120mg |
-| 2-3 years | 125mg (1/4 tablet) | 180mg |
-| 4-9 years | 250mg (1/2 tablet) |  |
-| 10-11 years | 500mg (1 tablet) |  |
-| 12-15yrs AND adults \<50kg | 750mg (1 and 1/2 tablets) |  |
-| Adults \>50kg | 1g (2 tablets) |  |
+| Age                        | Tablets                   | Syrup |
+| :------------------------- | :------------------------ | :---- |
+| 3-5 months                 | \-                        | 60mg  |
+| 6-23 months                | 125mg (1/4 tablet)        | 120mg |
+| 2-3 years                  | 125mg (1/4 tablet)        | 180mg |
+| 4-9 years                  | 250mg (1/2 tablet)        |       |
+| 10-11 years                | 500mg (1 tablet)          |       |
+| 12-15yrs AND adults \<50kg | 750mg (1 and 1/2 tablets) |       |
+| Adults \>50kg              | 1g (2 tablets)            |       |
 
 ### RECTAL
 
 Dose below can be taken every 4 – 6 hours as required; maximum 3 doses per day.
 
-| Age | Suppository |
-| :---- | :---- |
-| 3-11 months | 125mg |
-| 1-4 years | 250mg |
-| 5-11 years | 500mg |
-| \>12 years and adults | 1g |
+| Age                   | Suppository |
+| :-------------------- | :---------- |
+| 3-11 months           | 125mg       |
+| 1-4 years             | 250mg       |
+| 5-11 years            | 500mg       |
+| \>12 years and adults | 1g          |
 
 ---
 
@@ -1974,8 +2042,8 @@ Dose below can be taken every 4 – 6 hours as required; maximum 3 doses per day
 
 Dose below can be taken every 6 – 8 hours as required; maximum 3 doses per day.
 
-| Age | Dose |
-| :---- | :---- |
-| 1 – 6 years | 100mg (1/2 tablet) |
-| 7 – 11 years | 200mg (1 tablet) |
-| \>12 years and adults | 400mg (2 tablets) |
+| Age                   | Dose               |
+| :-------------------- | :----------------- |
+| 1 – 6 years           | 100mg (1/2 tablet) |
+| 7 – 11 years          | 200mg (1 tablet)   |
+| \>12 years and adults | 400mg (2 tablets)  |
