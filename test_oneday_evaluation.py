@@ -146,7 +146,7 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       </scenario>
 
       <criteria>
-      {"\n".join(criteria)}
+      {chr(10).join(criteria)}
       </criteria>
 
       <rules>
