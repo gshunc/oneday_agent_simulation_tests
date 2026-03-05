@@ -324,7 +324,9 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         description=nurse_description,
         agents=[
             agent,
-            scenario.UserSimulatorAgent(),
+            scenario.UserSimulatorAgent(
+                system_prompt=nurse_description,
+            ),
             scenario.JudgeAgent(
                 criteria=criteria,
                 model="gpt-5",
