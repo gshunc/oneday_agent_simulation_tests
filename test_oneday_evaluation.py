@@ -315,8 +315,10 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
     if expected_diagnosis:
         criteria.append(f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}")
 
-    if diagnosis_only:
+    if diagnosis_only and expected_diagnosis:
         criteria = [f"Agent provides the following diagnosis from the OneDay guidelines: {expected_diagnosis}"]
+    elif diagnosis_only and not expected_diagnosis:
+        pytest.skip(f"Skipping diagnosis_only test for '{test_name}': no expected_diagnosis defined")
 
     time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     resolved_turn_uuid = turn_uuid  # if turn_uuid is not None else os.getenv("TURN_JOURNEY_UUID")
@@ -324,7 +326,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
     simulation_id = raw_simulation_id[:24].ljust(6, "0")
     agent = OneDayAgentAdapter(model_id, simulation_id=simulation_id, turn=use_turn, turn_uuid=resolved_turn_uuid)
     result = await scenario.run(
-        name=f"OneDay - {test_name}",
+        name=test_name if test_name.startswith("OneDay") else f"OneDay - {test_name}",
         description=nurse_description,
         agents=[
             agent,

@@ -164,6 +164,9 @@ async def process_batch_async(cases: list[tuple[int, str]], batch_size: int = 10
                 formatted_case, case_num, original_case_text = result
                 print(f"Processed case number: {case_num} (/{len(cases)} total)")
                 checked = check_json(formatted_case, case_num)
+                if checked and not checked.get("expected_diagnosis"):
+                    print(f"Warning: Case {case_num} has null/missing expected_diagnosis, will retry. Response: {formatted_case[:200]}...")
+                    checked = None  # Force retry
                 results.append((formatted_case, case_num, original_case_text, checked))
     
     return results
