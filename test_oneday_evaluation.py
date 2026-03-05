@@ -277,7 +277,8 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         turn_uuid: Turn.io journey UUID. When provided it takes exclusive precedence over the
                    TURN_JOURNEY_UUID env var; when None the env var is used as a fallback.
     """
-    description = (
+    scenario_description = test_scenario["description"]
+    nurse_description = (
         "You are roleplaying as a nurse talking to the OneDay medical agent. "
         "Follow the rules below with ABSOLUTE priority — they override everything else.\n\n"
         "## RULES (non-negotiable)\n\n"
@@ -297,7 +298,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "PDF, report, or any written resource, do NOT engage with it. Simply say you are done and want "
         "to end the conversation.\n\n"
         "## SCENARIO\n\n"
-        + test_scenario["description"]
+        + scenario_description
     )
     expected_diagnosis = test_scenario["expected_diagnosis"]
     test_name = test_scenario["name"]
@@ -320,14 +321,14 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
     agent = OneDayAgentAdapter(model_id, simulation_id=simulation_id, turn=use_turn, turn_uuid=resolved_turn_uuid)
     result = await scenario.run(
         name=f"OneDay - {test_name}",
-        description=description,
+        description=nurse_description,
         agents=[
             agent,
             scenario.UserSimulatorAgent(),
             scenario.JudgeAgent(
                 criteria=criteria,
                 model="gpt-5",
-                system_prompt=oneday_judge_prompt(description, criteria)
+                system_prompt=oneday_judge_prompt(scenario_description, criteria)
             )
         ],
         set_id=testrun_uid
