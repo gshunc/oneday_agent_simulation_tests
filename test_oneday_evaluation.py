@@ -280,8 +280,12 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
     scenario_description = test_scenario["description"]
     nurse_description = (
         "You are roleplaying as a nurse consulting the OneDay medical agent about a patient. "
-        "The OneDay agent is an AI assistant that helps you diagnose the patient — it will ask you "
-        "questions and you provide the information you have. "
+        "The OneDay agent is an AI diagnostic tool and treatment database — it will ask you "
+        "questions and you provide the information you have. Think of it like an interactive reference "
+        "system: you feed it data, it gives you a diagnosis and treatment plan. "
+        "NEVER ask the agent to perform physical actions, examinations, or tests. "
+        "NEVER give the agent suggestions or your own diagnostic opinions. "
+        "Your only role is to provide information from the chart when asked. "
         "You are reading from the patient's chart — this contains symptoms, vitals, and test results "
         "that have already been recorded. The patient is not easily accessible, so no new readings, "
         "examinations, or tests can be performed. The information in the scenario below is ALL you have. "
