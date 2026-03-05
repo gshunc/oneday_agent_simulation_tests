@@ -19,58 +19,62 @@ def system_prompt() -> str:
     Returns the system prompt for the GPT model.
     """
     return """
-    You are a helpful assistant that converts a docs file into a list of test scenarios. You will be given a string that represents a medical case file.
+You convert medical case files into structured JSON test scenarios.
 
-    You are tasked with taking this haphazardly formatted text and converting it into a test scenario, formatted in JSON, and with the following schema:
+You will receive a raw, haphazardly formatted case. Return a single JSON object (no markdown fences, no surrounding text) with this schema:
 
-    {
-        "name": str,
-        "description": str,
-        "expected_diagnosis": str | None
-    }
+{
+  "name": string,
+  "description": string,
+  "expected_diagnosis": string or null
+}
 
-    Field descriptions:
-    - name: A short, descriptive title for the test scenario based on the patient's main condition
-    - description: A formatted breakdown with these sections:
-        NURSE: <patient's symptoms and initial information>
-        AGENT_QUESTIONS: <list of questions with expected nurse responses in format: - Question? (NURSE_RESPONSE: answer)>
-        AGENT_ANSWER: <the agent's diagnostic answer>
-        DIAGNOSIS: <the expected diagnosis>
-    - expected_diagnosis: The diagnosis the agent should provide, or null if none specified
+## Field definitions
 
-    Important: 
-    - description should fix grammar/punctuation but preserve all medical details
-    - Use "NURSE_RESPONSE:" format in AGENT_QUESTIONS section
-    - Sometimes the case will be given in a format this like as follows:
-    <CASE>
-    Case 12
-    A 4 year old child with loose mucoid diarrhoea for 5days, fever 2  days, and abdominal cramps is drinking eagerly. Temperature 38.2 degree respiration 42 breath per minute no cough and flu no abdominal tenderness.
-    Questions
-    - Any danger sign (no)
-    - Any other sign of dehydration (no)
-    - Malaria test (negative)
-    - Blood in the stool (yes)
-    Answer: communicate and treat with ciprofloxacin page 9
-    </CASE>
-    In this case, where we just see Answer and the word diagnosis is not present, you should extract the diagnosis from the Answer line.
+**name**: A concise scenario title summarising the patient's age, sex, and chief complaint.
+  - Format: "OneDay - <age> <sex> with <chief complaint and suspected condition>"
+  - Example: "OneDay - 30-year-old woman with mild headache suspected tension headache"
 
-    Here is an example of a test scenario, unformatted, and the JSON that should be returned:
-    <CASE>
-    A 55 year old man with Blood pressure of 165 systolic who has a very mild headache but no other symptoms. 
-    RDT for malaria was negative and his temperature was 36.8. What should I do next? 
-    Questions - Has their blood pressure been tested before? (no) - Have you tested blood sugar as well to check for diabetes? (yes its 6.0 fasting) - Are they a smoker (no) Answer - With only one measurement high, there should be another test another day before starting medication, so ask them to come back (this isn't necessarily so clear in the guidelines actually0 Diagnosis: Tension headache OR no diagnosis
-    </CASE>
+**description**: A structured breakdown of the case with these sections, each on its own line:
 
-    <JSON>
-    {
-        "name": "A 55 year old man with Blood pressure of 165 systolic who has a very mild headache but no other symptoms",
-        "description": "NURSE: A 55 year old man with Blood pressure of 165 systolic who has a very mild headache but no other symptoms. RDT for malaria was negative and his temperature was 36.8. What should I do next? AGENT_QUESTIONS: - Has their blood pressure been tested before? (NURSE_RESPONSE: no) - Have you tested blood sugar as well to check for diabetes? (NURSE_RESPONSE: yes its 6.0 fasting) - Are they a smoker (NURSE_RESPONSE: no) AGENT_ANSWER: - With only one measurement high, there should be another test another day before starting medication, so ask them to come back. DIAGNOSIS: Tension headache OR no diagnosis",
-        "expected_diagnosis": "Tension headache OR no diagnosis"
-    }
-    </JSON>
+  NURSE: <patient demographics, presenting symptoms, vitals, and any initial test results>
+  ONEDAY_AGENT_QUESTIONS:
+  - <Question>? (NURSE_RESPONSE: <answer>),
+  - <Question>? (NURSE_RESPONSE: <answer>)
+  ONEDAY_AGENT_RESPONSE: <the final diagnosis and explanation of next steps by the OneDay Agent>
+  EXPECTED_DIAGNOSIS: <the expected diagnosis>
 
-    Return only the JSON, no other text or formatting.
-    """
+  Rules for the description:
+  - Fix grammar and punctuation, but preserve ALL medical details exactly.
+  - Every question-answer pair must use the "(NURSE_RESPONSE: ...)" format.
+  - Include the ONEDAY_AGENT_RESPONSE section with the expected final diagnosis and next steps as described in the case.
+
+**expected_diagnosis**: The diagnosis the agent should arrive at, or null if no diagnosis is specified.
+
+## Extracting the diagnosis
+
+- If the case contains an explicit "Diagnosis:" line, use that value.
+- If there is no "Diagnosis:" line but there is an "Answer:" line, infer the diagnosis from the answer (e.g. "Answer: communicate and treat with ciprofloxacin" → the diagnosis is the condition that ciprofloxacin treats in context).
+- If neither is present, set expected_diagnosis to null.
+
+## Example
+
+Input:
+<CASE>
+A 55 year old man with Blood pressure of 165 systolic who has a very mild headache but no other symptoms.
+RDT for malaria was negative and his temperature was 36.8. What should I do next?
+Questions - Has their blood pressure been tested before? (no) - Have you tested blood sugar as well to check for diabetes? (yes its 6.0 fasting) - Are they a smoker (no) Answer - With only one measurement high, there should be another test another day before starting medication, so ask them to come back Diagnosis: Tension headache OR no diagnosis
+</CASE>
+
+Output:
+{
+  "name": "OneDay - 55-year-old man with high blood pressure and mild headache suspected tension headache",
+  "description": "NURSE: A 55-year-old man with blood pressure of 165 systolic who has a very mild headache but no other symptoms. RDT for malaria was negative and his temperature was 36.8.\\nONEDAY_AGENT_QUESTIONS:\\n- Has their blood pressure been tested before? (NURSE_RESPONSE: no)\\n- Have you tested blood sugar as well to check for diabetes? (NURSE_RESPONSE: yes, it's 6.0 fasting)\\n- Are they a smoker? (NURSE_RESPONSE: no)\\nONEDAY_AGENT_RESPONSE: With only one measurement high, there should be another test another day before starting medication, so ask them to come back.\\nEXPECTED_DIAGNOSIS: Tension headache OR no diagnosis",
+  "expected_diagnosis": "Tension headache OR no diagnosis"
+}
+
+Return ONLY the raw JSON object. No markdown code fences, no explanation, no extra text.
+"""
 
 async def format_case_async(case_num: int, case_text: str) -> tuple[str, int, str]:
     """
@@ -92,9 +96,17 @@ def check_json(response: str, case_index: int = 0) -> dict | None:
     """
     Checks if the response is valid JSON.
     Returns the json object if the response is valid JSON, None otherwise.
+    Strips markdown code fences if present.
     """
+    text = response.strip()
+    if text.startswith("```"):
+        # Remove opening fence (with optional language tag) and closing fence
+        text = text.split("\n", 1)[1] if "\n" in text else text[3:]
+        if text.endswith("```"):
+            text = text[:-3]
+        text = text.strip()
     try:
-        result = json.loads(response)
+        result = json.loads(text)
         if isinstance(result, list):
             result = result[0]
         return result
