@@ -326,6 +326,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
             agent,
             scenario.UserSimulatorAgent(
                 system_prompt=nurse_description,
+                model="gemini-3-flash-preview"
             ),
             scenario.JudgeAgent(
                 criteria=criteria,
