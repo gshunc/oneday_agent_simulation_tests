@@ -53,9 +53,15 @@ You will receive a raw, haphazardly formatted case. Return a single JSON object 
 
 ## Extracting the diagnosis
 
-- If the case contains an explicit "Diagnosis:" line, use that value.
-- If there is no "Diagnosis:" line but there is an "Answer:" line, infer the diagnosis from the answer (e.g. "Answer: communicate and treat with ciprofloxacin" → the diagnosis is the condition that ciprofloxacin treats in context).
-- If neither is present, set expected_diagnosis to null.
+IMPORTANT: expected_diagnosis should almost NEVER be null. Most cases have a diagnosis — you just need to find it.
+
+1. If the case contains an explicit "Diagnosis:" line, use that value.
+2. If there is no "Diagnosis:" line but there is an "Answer:" line, the Answer IS the diagnosis source. Extract the diagnosis from it:
+   - "Answer: communicate and treat with ciprofloxacin page 9" → the diagnosis is the condition being treated (e.g. "Bloody diarrhea" or "Dysentery")
+   - "Answer: treat as severe malaria, refer" → the diagnosis is "Severe malaria"
+   - "Answer: give ORS and zinc, review in 5 days" → the diagnosis is "Acute diarrhoea with some dehydration" (or whatever the symptoms indicate)
+   - The Answer line always implies a diagnosis — use the symptoms, treatment, and medical context to determine what condition is being diagnosed.
+3. Only set expected_diagnosis to null if there is genuinely no Answer line AND no Diagnosis line AND no indication of what the condition is.
 
 ## Example
 
@@ -71,6 +77,27 @@ Output:
   "name": "OneDay - 55-year-old man with high blood pressure and mild headache suspected tension headache",
   "description": "NURSE: A 55-year-old man with blood pressure of 165 systolic who has a very mild headache but no other symptoms. RDT for malaria was negative and his temperature was 36.8.\\nONEDAY_AGENT_QUESTIONS:\\n- Has their blood pressure been tested before? (NURSE_RESPONSE: no)\\n- Have you tested blood sugar as well to check for diabetes? (NURSE_RESPONSE: yes, it's 6.0 fasting)\\n- Are they a smoker? (NURSE_RESPONSE: no)\\nONEDAY_AGENT_RESPONSE: With only one measurement high, there should be another test another day before starting medication, so ask them to come back.\\nEXPECTED_DIAGNOSIS: Tension headache OR no diagnosis",
   "expected_diagnosis": "Tension headache OR no diagnosis"
+}
+
+Example 2 (Answer line, no Diagnosis line):
+
+Input:
+<CASE>
+Case 12
+A 4 year old child with loose mucoid diarrhoea for 5 days, fever 2 days, and abdominal cramps is drinking eagerly. Temperature 38.2 degree respiration 42 breath per minute no cough and flu no abdominal tenderness.
+Questions
+- Any danger sign (no)
+- Any other sign of dehydration (no)
+- Malaria test (negative)
+- Blood in the stool (yes)
+Answer: communicate and treat with ciprofloxacin page 9
+</CASE>
+
+Output:
+{
+  "name": "OneDay - 4-year-old child with bloody diarrhea and fever suspected dysentery",
+  "description": "NURSE: A 4-year-old child with loose mucoid diarrhoea for 5 days, fever for 2 days, and abdominal cramps. The child is drinking eagerly. Temperature 38.2°C, respiration 42 breaths per minute, no cough or flu, no abdominal tenderness.\\nONEDAY_AGENT_QUESTIONS:\\n- Any danger signs? (NURSE_RESPONSE: no)\\n- Any other signs of dehydration? (NURSE_RESPONSE: no)\\n- Malaria test result? (NURSE_RESPONSE: negative)\\n- Blood in the stool? (NURSE_RESPONSE: yes)\\nONEDAY_AGENT_RESPONSE: Communicate and treat with ciprofloxacin.\\nEXPECTED_DIAGNOSIS: Bloody diarrhea (dysentery)",
+  "expected_diagnosis": "Bloody diarrhea (dysentery)"
 }
 
 Return ONLY the raw JSON object. No markdown code fences, no explanation, no extra text.
