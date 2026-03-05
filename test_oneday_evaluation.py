@@ -128,15 +128,19 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       </one_day_guidelines>
 
       <goal>
-      Your goal is to determine whether the agent under test has explicitly stated a final diagnosis or whether the conversation should continue.
+      Your goal is to determine whether the agent under test has concluded the conversation or whether it should continue.
 
-      Use the continue_test tool by default. Only call finish_test when ALL of the following are true:
-        1. The agent's message contains the literal tag <END> — this is the agent's own signal that it has concluded the conversation.
-        2. The agent has stated a specific diagnosis using an explicit diagnostic frame (e.g. "The diagnosis is X", "Diagnosis: X", "Diagnosis: possible X", "This sounds like X", "This is X") — bare suspicions like "I think it might be X" do not qualify. The diagnosis may appear in the CURRENT message or in any EARLIER message in the conversation.
-        3. The agent has provided complete treatment instructions alongside the diagnosis (in the same message as the diagnosis, or in a prior message).
+      Call finish_test IMMEDIATELY when ANY of the following end conditions is met:
+        A. The agent's message contains the literal tag <END>.
+        B. The agent's message offers to send, share, or provide a document, checklist, PDF, report, or any written resource — AND a diagnosis has already been given at any point in the conversation.
+        C. The agent sends a self-evaluation prompt such as "Did I do well?" or asks the user to reply with ✅/❌/💬.
+        D. A diagnosis AND treatment plan have been explicitly provided in the current or any previous message, AND the agent's current message is a closing/wrap-up message (e.g. summarising, asking if there's anything else, saying goodbye).
 
-      If ANY of these three conditions is not met, you MUST call continue_test. Do not call finish_test early.
-      When in doubt, always continue the test. Err heavily on the side of letting the conversation play out.
+      For conditions A, B, and D: if a diagnosis was provided at any point in the conversation (current or earlier messages), the run is valid. If NO diagnosis was ever given, the run is a failure.
+      For condition C: if no diagnosis was given before this prompt, the run is a failure.
+
+      Use continue_test ONLY when NONE of the above end conditions are met AND the agent has not yet committed to a diagnosis.
+      Once a diagnosis and treatment have been given, you should be looking for the conversation to end — do not let it drag on.
       </goal>
 
       <scenario>
@@ -152,8 +156,8 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       <rules>
       - DO NOT make any judgment calls that are not explicitly listed in the success or failure criteria. Withhold judgement if necessary.
       - Do NOT count the <EXPLANATION> tag as a diagnosis and do not confuse the case information given to you with the actual output of the model.
-      - NEVER call finish_test unless the agent's message contains the literal string <END>. No <END> tag = call continue_test, no exceptions.
-      - If a message contains <END> but no diagnosis in that same message, check the ENTIRE conversation history. If the agent already provided an explicit diagnosis and treatment in a previous message, the <END> is valid — call finish_test. Only fail if no diagnosis was given at any point in the conversation.
+      - When any end condition from the <goal> section is met, you MUST call finish_test. Do not continue the conversation past an end condition.
+      - When checking for a diagnosis, always review the ENTIRE conversation history, not just the current message. A diagnosis given in a previous message counts.
       - A diagnosis MUST be an explicit, committed statement. The agent must outright declare the diagnosis using a clear diagnostic frame such as "The diagnosis is X", "Diagnosis: X", "Based on the symptoms, the diagnosis is X", or "This sounds like X".
       - Exception: if the agent uses an explicit diagnostic label (e.g. "Diagnosis: possible X" or "The likely diagnosis is X"), hedged qualifiers like "possible" or "likely" within that framing DO count as a valid diagnosis. What matters is the explicit diagnostic frame, not the absence of every qualifier.
       - Hedged language WITHOUT a diagnostic frame does NOT qualify — e.g. "I suspect X", "this could be X", or "X is a possibility" on their own are not a diagnosis.
@@ -169,21 +173,7 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       </rules>
 
       <NOTE>
-      If a diagnosis has already been given in the conversation AND the agent's current message offers to send, share, or provide a document, checklist, PDF, report, or any written resource — treat this as a conversation end state and call finish_test immediately, even if the message does not contain <END>.
-      </NOTE>
-
-      <NOTE>
-      If the agent sends:
-      "Did I do well?
-
-      Exclusively reply with one of the following options: ✅ Yes, ❌ No, 💬 Continue chat
-
-      Please only reply with the exact word. Do not use any other words or phrases."
-      This is an ending condition which should constitute the end of a run. If at this poiint no diagnosis has been given, the conversation is a failure and you should call the finish_test tool.
-      </NOTE>
-
-      <NOTE>
-      If the agent's message is empty or contains only the <END> tag with no actual content, the agent has abruptly ended the conversation without providing a diagnosis. This is an automatic failure — call finish_test immediately and mark all criteria as failed.
+      If the agent's message is empty or contains only the <END> tag with no actual content and no diagnosis was given earlier in the conversation, the agent has abruptly ended without providing a diagnosis. This is an automatic failure — call finish_test immediately and mark all criteria as failed.
       </NOTE>
     """
 
