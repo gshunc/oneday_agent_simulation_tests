@@ -313,7 +313,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "## PATIENT CHART\n\n"
         + scenario_description
     )
-    expected_diagnosis = test_scenario["expected_diagnosis"]
+    expected_diagnosis = test_scenario.get("expected_diagnosis")
     test_name = test_scenario["name"]
 
     criteria = [
