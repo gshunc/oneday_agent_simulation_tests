@@ -59,16 +59,13 @@ def run_model_tests(model: str, results_dir: str, variant: str | None = None) ->
     return proc.returncode
 
 
-def run_turn_tests(turn_uuid: str, results_dir: str, max_cases: int | None = None) -> int:
-    """Run pytest for a single Turn.io journey UUID and return the exit code.
-
-    diagnosis_only tests are intentionally excluded — they are redundant for turn journey runs.
-    """
+def run_turn_tests(turn_uuid: str, results_dir: str, max_cases: int | None = None, variant: str = "diagnosis_only") -> int:
+    """Run pytest for a single Turn.io journey UUID and return the exit code."""
     if max_cases is not None:
         case_ids = " or ".join(f"[case_{i}]" for i in range(1, max_cases + 1))
-        k_expr = f"standard and ({case_ids})"
+        k_expr = f"{variant} and ({case_ids})"
     else:
-        k_expr = "standard"
+        k_expr = variant
 
     cmd = [
         sys.executable, "-m", "pytest",
@@ -416,8 +413,9 @@ def main():
         print(f"OneDay Turn Journey Evaluation")
         print(f"Journey UUIDs: {', '.join(args.turn_uuids)}")
         print(f"Results dir: {results_dir}")
+        turn_variant = args.variant or "diagnosis_only"
         for uuid in args.turn_uuids:
-            exit_codes[uuid] = run_turn_tests(uuid, results_dir, args.max_cases)
+            exit_codes[uuid] = run_turn_tests(uuid, results_dir, args.max_cases, variant=turn_variant)
     else:
         print(f"OneDay Cross-Model Evaluation")
         print(f"Models: {', '.join(args.models)}")
