@@ -33,8 +33,8 @@ ALL_MODELS = [
 PROJECT_ROOT = Path(__file__).parent
 
 
-def run_model_tests(model: str, results_dir: str, variant: str | None = None) -> tuple[int, str]:
-    """Run pytest for a single model and return (exit_code, stdout)."""
+def run_model_tests(model: str, results_dir: str, variant: str | None = None) -> int:
+    """Run pytest for a single model and return the exit code."""
     cmd = [
         sys.executable, "-m", "pytest",
         "-n", "auto",

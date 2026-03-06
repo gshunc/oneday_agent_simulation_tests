@@ -68,7 +68,7 @@ def compute_usage_from_traces(trace_ids: list[str]) -> dict:
                         total_tokens=prompt_tokens + completion_tokens,
                     ),
                 )
-                total_cost += litellm.completion_cost(
+                total_cost += litellm.completion_cost(  # type: ignore[attr-defined]
                     completion_response=mock_response,
                     model=model,
                 )

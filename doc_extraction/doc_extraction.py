@@ -56,6 +56,8 @@ def extract_case_separated_docs() -> list[tuple[int, str]]:
     Extracts the docs file and returns a list of tuples (case_number, case_text).
     Splits on 'case' followed by a number to avoid splitting on the word 'case' in descriptions.
     """
+    if not DOC_ID:
+        raise ValueError("DOC_ID environment variable is not set")
     doc_text = get_document_body_text(DOC_ID)
     
     # Split by "case" followed by whitespace and a number (case-insensitive)

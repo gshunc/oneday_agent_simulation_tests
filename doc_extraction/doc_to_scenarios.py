@@ -116,7 +116,7 @@ async def format_case_async(case_num: int, case_text: str) -> tuple[str, int, st
             {"role": "user", "content": case_text}
         ]
     )
-    return response.choices[0].message.content, case_num, case_text
+    return response.choices[0].message.content, case_num, case_text  # type: ignore[union-attr]
 
 
 def check_json(response: str, case_index: int = 0) -> dict | None:
@@ -157,7 +157,7 @@ async def process_batch_async(cases: list[tuple[int, str]], batch_size: int = 10
         batch_results = await asyncio.gather(*tasks, return_exceptions=True)
         
         for result in batch_results:
-            if isinstance(result, Exception):
+            if isinstance(result, BaseException):
                 print(f"Error processing case: {result}")
                 results.append((None, -1, "", None))
             else:
