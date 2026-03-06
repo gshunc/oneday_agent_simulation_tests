@@ -334,7 +334,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
             ),
             scenario.JudgeAgent(
                 criteria=criteria,
-                model="gpt-5",
+                model="gpt-5-mini",
                 system_prompt=oneday_judge_prompt(scenario_description, criteria)
             )
         ],
