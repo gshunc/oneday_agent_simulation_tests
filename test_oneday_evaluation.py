@@ -290,6 +290,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "equivalent to: \\\"A 55-year-old man with a blood pressure of 165 systolic and "
         "a very mild headache but no other symptoms. RDT for malaria was negative and his "
         "temperature was 36.8\u00b0C. What should I do next?\\\"\\n\\n"
+        "Don't return the \"NURSE\" part of the text, of course.\n\n"
         "Turn 3+: Answer the agent's questions from your chart. Only provide what was asked. "
         "If the agent asks multiple questions, answer each one briefly. "
         "If something isn't on the chart, say the test wasn't done or the info isn't available.\n\n"
@@ -297,6 +298,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "- Short WhatsApp-style messages. No bullet points, no structured formats.\n"
         "- Never suggest a diagnosis or ask the agent to do exams/tests.\n"
         "- If the agent offers to send a document or PDF, say you're done.\n\n"
+        "- NO MATTER WHAT, NEVER EVER DUMP THE ENTIRE CASE. TALK TO THE AGENT CONVERSATIONALLY!\n\n"
         "## Your patient chart\n\n"
         + scenario_description
     )
