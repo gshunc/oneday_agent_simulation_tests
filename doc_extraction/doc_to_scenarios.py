@@ -48,6 +48,7 @@ You will receive a raw, haphazardly formatted case. Return a single JSON object 
   - Fix grammar and punctuation, but preserve ALL medical details exactly.
   - Every question-answer pair must use the "(NURSE_RESPONSE: ...)" format.
   - Include the ONEDAY_AGENT_RESPONSE section with the expected final diagnosis and next steps as described in the case.
+  - CRITICAL: The NURSE section must ONLY contain the patient's initial presenting information — what the nurse would say before any questions are asked. Any information that appears as an answer to a question in the "Questions" section must NOT be included in the NURSE section, even if the raw case text mentions it in the opening paragraph. Move it to the ONEDAY_AGENT_QUESTIONS section instead. For example, if the raw text says "a boy has fever, vomiting, headache, no cough" and the questions include "Cough or flu? (no)", then "no cough" must be removed from the NURSE section because it is an answer to a question the agent should ask.
 
 **expected_diagnosis**: The diagnosis the agent should arrive at, or null if no diagnosis is specified.
 
@@ -79,7 +80,7 @@ Output:
   "expected_diagnosis": "Tension headache OR no diagnosis"
 }
 
-Example 2 (Answer line, no Diagnosis line):
+Example 2 (Answer line, no Diagnosis line — notice how "no cough and flu" and "no abdominal tenderness" from the raw text are NOT in the NURSE section because they correspond to questions the agent should ask):
 
 Input:
 <CASE>
@@ -96,7 +97,7 @@ Answer: communicate and treat with ciprofloxacin page 9
 Output:
 {
   "name": "OneDay - 4-year-old child with bloody diarrhea and fever suspected dysentery",
-  "description": "NURSE: A 4-year-old child with loose mucoid diarrhoea for 5 days, fever for 2 days, and abdominal cramps. The child is drinking eagerly. Temperature 38.2°C, respiration 42 breaths per minute, no cough or flu, no abdominal tenderness.\\nONEDAY_AGENT_QUESTIONS:\\n- Any danger signs? (NURSE_RESPONSE: no)\\n- Any other signs of dehydration? (NURSE_RESPONSE: no)\\n- Malaria test result? (NURSE_RESPONSE: negative)\\n- Blood in the stool? (NURSE_RESPONSE: yes)\\nONEDAY_AGENT_RESPONSE: Communicate and treat with ciprofloxacin.\\nEXPECTED_DIAGNOSIS: Bloody diarrhea (dysentery)",
+  "description": "NURSE: A 4-year-old child with loose mucoid diarrhoea for 5 days, fever for 2 days, and abdominal cramps. The child is drinking eagerly. Temperature 38.2°C, respiration 42 breaths per minute.\\nONEDAY_AGENT_QUESTIONS:\\n- Any danger signs? (NURSE_RESPONSE: no)\\n- Any other signs of dehydration? (NURSE_RESPONSE: no)\\n- Malaria test result? (NURSE_RESPONSE: negative)\\n- Blood in the stool? (NURSE_RESPONSE: yes)\\n- Cough or flu? (NURSE_RESPONSE: no)\\n- Abdominal tenderness? (NURSE_RESPONSE: no)\\nONEDAY_AGENT_RESPONSE: Communicate and treat with ciprofloxacin.\\nEXPECTED_DIAGNOSIS: Bloody diarrhea (dysentery)",
   "expected_diagnosis": "Bloody diarrhea (dysentery)"
 }
 
