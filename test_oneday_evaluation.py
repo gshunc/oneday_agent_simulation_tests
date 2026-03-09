@@ -143,12 +143,6 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       Once a diagnosis and treatment have been given, you should be looking for the conversation to end — do not let it drag on.
       </goal>
 
-      <scenario>
-      {scenario_description}
-      If the user doesn't follow the script, you should make note of this and report it as a failure.
-      It is critical that the agent asks all necessary follow-up questions before arriving at a diagnosis. Do NOT end the test prematurely — let the agent gather information and reach its own conclusion. The test should only end once a definitive diagnosis has been stated.
-      </scenario>
-
       <criteria>
       {chr(10).join(criteria)}
       </criteria>
@@ -175,6 +169,12 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       <NOTE>
       If the agent's message is empty or contains only the <END> tag with no actual content and no diagnosis was given earlier in the conversation, the agent has abruptly ended without providing a diagnosis. This is an automatic failure — call finish_test immediately and mark all criteria as failed.
       </NOTE>
+
+      <scenario>
+      {scenario_description}
+      If the user doesn't follow the script, you should make note of this and report it as a failure.
+      It is critical that the agent asks all necessary follow-up questions before arriving at a diagnosis. Do NOT end the test prematurely — let the agent gather information and reach its own conclusion. The test should only end once a definitive diagnosis has been stated.
+      </scenario>
     """
 
 
@@ -322,7 +322,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
             ),
             scenario.JudgeAgent(
                 criteria=criteria,
-                model="gpt-5-mini",
+                model="gpt-5",
                 system_prompt=oneday_judge_prompt(scenario_description, criteria)
             )
         ],
