@@ -3,6 +3,7 @@ import litellm
 import json
 import os
 import asyncio
+import re
 from doc_extraction import extract_case_separated_docs
 
 
@@ -13,6 +14,20 @@ class Scenario(TypedDict):
     description: str
     original_text: str
     expected_diagnosis: str | None
+
+
+CASE_NAME_PATTERN = re.compile(r"^case\s+\d+\b(?:\s*[-:])?\s*", re.IGNORECASE)
+
+
+def normalize_scenario(case_num: int, case_text: str, scenario: dict) -> Scenario:
+    """Keep scenario metadata aligned with the current source case."""
+    normalized = dict(scenario)
+    raw_name = str(normalized.get("name") or "").strip()
+    name_without_case = CASE_NAME_PATTERN.sub("", raw_name)
+    normalized["name"] = f"Case {case_num} - {name_without_case}" if name_without_case else f"Case {case_num}"
+    normalized["case_number"] = case_num
+    normalized["original_text"] = case_text
+    return normalized  # type: ignore[return-value]
 
 def system_prompt() -> str:
     """
@@ -32,8 +47,8 @@ You will receive a raw, haphazardly formatted case. Return a single JSON object 
 ## Field definitions
 
 **name**: A concise scenario title summarising the patient's age, sex, and chief complaint.
-  - Format: "OneDay - <age> <sex> with <chief complaint and suspected condition>"
-  - Example: "OneDay - 30-year-old woman with mild headache suspected tension headache"
+  - Format: "Case <number> - OneDay - <age> <sex> with <chief complaint and suspected condition>"
+  - Example: "Case 10 - OneDay - 30-year-old woman with mild headache suspected tension headache"
 
 **description**: A structured breakdown of the case with these sections, each on its own line:
 
@@ -75,7 +90,7 @@ Questions - Has their blood pressure been tested before? (no) - Have you tested 
 
 Output:
 {
-  "name": "OneDay - 55-year-old man with high blood pressure and mild headache suspected tension headache",
+  "name": "Case 1 - OneDay - 55-year-old man with high blood pressure and mild headache suspected tension headache",
   "description": "NURSE: A 55-year-old man with blood pressure of 165 systolic who has a very mild headache but no other symptoms. RDT for malaria was negative and his temperature was 36.8.\\nONEDAY_AGENT_QUESTIONS:\\n- Has their blood pressure been tested before? (NURSE_RESPONSE: no)\\n- Have you tested blood sugar as well to check for diabetes? (NURSE_RESPONSE: yes, it's 6.0 fasting)\\n- Are they a smoker? (NURSE_RESPONSE: no)\\nONEDAY_AGENT_RESPONSE: With only one measurement high, there should be another test another day before starting medication, so ask them to come back.\\nEXPECTED_DIAGNOSIS: Tension headache OR no diagnosis",
   "expected_diagnosis": "Tension headache OR no diagnosis"
 }
@@ -96,7 +111,7 @@ Answer: communicate and treat with ciprofloxacin page 9
 
 Output:
 {
-  "name": "OneDay - 4-year-old child with bloody diarrhea and fever suspected dysentery",
+  "name": "Case 12 - OneDay - 4-year-old child with bloody diarrhea and fever suspected dysentery",
   "description": "NURSE: A 4-year-old child with loose mucoid diarrhoea for 5 days, fever for 2 days, and abdominal cramps. The child is drinking eagerly. Temperature 38.2°C, respiration 42 breaths per minute.\\nONEDAY_AGENT_QUESTIONS:\\n- Any danger signs? (NURSE_RESPONSE: no)\\n- Any other signs of dehydration? (NURSE_RESPONSE: no)\\n- Malaria test result? (NURSE_RESPONSE: negative)\\n- Blood in the stool? (NURSE_RESPONSE: yes)\\n- Cough or flu? (NURSE_RESPONSE: no)\\n- Abdominal tenderness? (NURSE_RESPONSE: no)\\nONEDAY_AGENT_RESPONSE: Communicate and treat with ciprofloxacin.\\nEXPECTED_DIAGNOSIS: Bloody diarrhea (dysentery)",
   "expected_diagnosis": "Bloody diarrhea (dysentery)"
 }
@@ -205,10 +220,7 @@ async def doc_to_scenarios_async(retries: int = 2, batch_size: int = 10) -> list
     for case_num, case_text in case_separated:
         cached_scenario = cached_cases.get(case_text)
         if cached_scenario:
-            # Keep cache hits aligned with the current source numbering.
-            refreshed_scenario = dict(cached_scenario)
-            refreshed_scenario['case_number'] = case_num
-            refreshed_scenario['original_text'] = case_text
+            refreshed_scenario = normalize_scenario(case_num, case_text, cached_scenario)
             cached_cases[case_text] = refreshed_scenario
             scenarios.append(refreshed_scenario)
         else:
@@ -236,8 +248,7 @@ async def doc_to_scenarios_async(retries: int = 2, batch_size: int = 10) -> list
         # Collect results
         for formatted_case, case_num, original_case_text, checked_scenario in results:
             if checked_scenario:
-                checked_scenario['case_number'] = case_num
-                checked_scenario['original_text'] = original_case_text
+                checked_scenario = normalize_scenario(case_num, original_case_text, checked_scenario)
                 cached_cases[original_case_text] = checked_scenario
                 scenarios.append(checked_scenario)
             elif original_case_text:

@@ -67,11 +67,13 @@ def test_doc_to_scenarios_prunes_stale_cache_and_refreshes_case_numbers(tmp_path
 
     assert [scenario["case_number"] for scenario in scenarios] == [7, 8]
     assert {scenario["original_text"] for scenario in scenarios} == {"keep text", "new text"}
+    assert {scenario["name"] for scenario in scenarios} == {"Case 7 - cached", "Case 8 - new"}
 
     cached_rows = read_cache()
     assert len(cached_rows) == 2
     assert {row["original_text"] for row in cached_rows} == {"keep text", "new text"}
     assert {row["case_number"] for row in cached_rows} == {7, 8}
+    assert {row["name"] for row in cached_rows} == {"Case 7 - cached", "Case 8 - new"}
 
 
 def test_doc_to_scenarios_updates_case_number_for_cache_hit(tmp_path, monkeypatch):
@@ -107,7 +109,9 @@ def test_doc_to_scenarios_updates_case_number_for_cache_hit(tmp_path, monkeypatc
 
     assert len(scenarios) == 1
     assert scenarios[0]["case_number"] == 9
+    assert scenarios[0]["name"] == "Case 9 - cached"
 
     cached_rows = read_cache()
     assert len(cached_rows) == 1
     assert cached_rows[0]["case_number"] == 9
+    assert cached_rows[0]["name"] == "Case 9 - cached"

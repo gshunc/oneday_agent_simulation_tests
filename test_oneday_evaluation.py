@@ -281,7 +281,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "come out when the agent asks about it.\n\n"
         "Turn 3+: Answer the agent's questions from your chart. Only provide what was asked. "
         "If the agent asks multiple questions, answer each one briefly. "
-        "If something isn't on the chart, say the test wasn't done or the info isn't available.\n\n"
+        "If something that the agent asks you isn't on the chart, and it's a yes or no question, assume the answer is no. If a reading like blood pressure or glucose is asked for but not listed in your chart, assume they are normal and report as such. Assume weight is normal for age range if not listed and report as such in kg.\n\n"
         "## Style\n\n"
         "- Short WhatsApp-style messages. No bullet points, no structured formats.\n"
         "- Never suggest a diagnosis or ask the agent to do exams/tests.\n"
