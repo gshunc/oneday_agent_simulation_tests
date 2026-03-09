@@ -188,20 +188,36 @@ async def doc_to_scenarios_async(retries: int = 2, batch_size: int = 10) -> list
                     if 'original_text' in scenario:
                         cached_cases[scenario['original_text']] = scenario
 
-    cached_count = len(cached_cases)
-
     case_separated = extract_case_separated_docs()
     total_cases = len(case_separated)
-    
-    # Start scenarios list with cached cases that match current cases
-    scenarios = [cached_cases[case_text] for case_num, case_text in case_separated if case_text in cached_cases]
-    
-    # Filter out cached cases from cases to process
-    case_separated = [(case_num, case_text) for case_num, case_text in case_separated if case_text not in cached_cases]
+    current_case_texts = {case_text for _, case_text in case_separated}
+
+    # Drop stale cache entries that are no longer present in the source doc.
+    cached_cases = {
+        case_text: scenario
+        for case_text, scenario in cached_cases.items()
+        if case_text in current_case_texts
+    }
+    cached_count = len(cached_cases)
+
+    scenarios: list[Scenario] = []
+    uncached_cases = []
+    for case_num, case_text in case_separated:
+        cached_scenario = cached_cases.get(case_text)
+        if cached_scenario:
+            # Keep cache hits aligned with the current source numbering.
+            refreshed_scenario = dict(cached_scenario)
+            refreshed_scenario['case_number'] = case_num
+            refreshed_scenario['original_text'] = case_text
+            cached_cases[case_text] = refreshed_scenario
+            scenarios.append(refreshed_scenario)
+        else:
+            uncached_cases.append((case_num, case_text))
+
     print(f"Total cases extracted from Google Doc: {total_cases}")
     print(f"Number of cases found in cache: {cached_count}")
-    print(f"Cache hits: {total_cases - len(case_separated)}")
-    print(f"Cases to process: {len(case_separated)}")
+    print(f"Cache hits: {len(scenarios)}")
+    print(f"Cases to process: {len(uncached_cases)}")
     
     failed_cases = []
 
@@ -209,7 +225,7 @@ async def doc_to_scenarios_async(retries: int = 2, batch_size: int = 10) -> list
     for r in range(retries):
         if len(failed_cases) > 0:
             print(f"Retrying {len(failed_cases)} failed cases...")
-        cases_to_process = case_separated if r == 0 else failed_cases
+        cases_to_process = uncached_cases if r == 0 else failed_cases
         if not cases_to_process:
             break
             
