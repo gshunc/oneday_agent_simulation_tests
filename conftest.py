@@ -24,6 +24,8 @@ load_dotenv()
 # Store results per variant
 _test_results = defaultdict(list)
 _test_metadata = {}
+_completed_count = 0
+_total_count = 0
 
 
 def compute_usage_from_traces(trace_ids: list[str]) -> dict:
@@ -184,6 +186,26 @@ def pytest_configure_node(node):
     node.workerinput["timestamp"] = node.config.timestamp
     # Serialize scenarios to JSON for worker
     node.workerinput["scenarios"] = json.dumps(node.config._scenarios)
+
+
+def pytest_collection_modifyitems(items):
+    """Store total test count after collection."""
+    global _total_count
+    _total_count = len(items)
+
+
+def pytest_report_teststatus(report, config):
+    """Override test status characters to show colored progress numbers."""
+    global _completed_count
+    if report.when == "call":
+        _completed_count += 1
+        label = f" {_completed_count}"
+        if report.passed:
+            return "passed", {"green": label}, "PASSED"
+        elif report.failed:
+            return "failed", {"red": label}, "FAILED"
+        elif report.skipped:
+            return "skipped", {"yellow": label}, "SKIPPED"
 
 
 def pytest_runtest_logreport(report):
