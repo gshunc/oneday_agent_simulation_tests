@@ -201,11 +201,11 @@ def pytest_report_teststatus(report, config):
         _completed_count += 1
         label = f" {_completed_count}"
         if report.passed:
-            return "passed", {"green": label}, "PASSED"
+            return "passed", label, "PASSED"
         elif report.failed:
-            return "failed", {"red": label}, "FAILED"
+            return "failed", label, "FAILED"
         elif report.skipped:
-            return "skipped", {"yellow": label}, "SKIPPED"
+            return "skipped", label, "SKIPPED"
 
 
 def pytest_runtest_logreport(report):
