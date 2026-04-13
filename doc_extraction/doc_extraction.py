@@ -60,9 +60,9 @@ def extract_case_separated_docs() -> list[tuple[int, str]]:
         raise ValueError("DOC_ID environment variable is not set")
     doc_text = get_document_body_text(DOC_ID)
     
-    # Split by "case" followed by whitespace and a number (case-insensitive)
+    # Split by "case" followed by optional whitespace and a number (case-insensitive)
     # The pattern captures the number so we can use it
-    parts = re.split(r'(?i)\bcase\s+(\d+)', doc_text)
+    parts = re.split(r'(?i)\bcase\s*(\d+)', doc_text)
     
     # parts[0] is text before first case (usually empty or header)
     # parts[1] is the first case number, parts[2] is the first case text

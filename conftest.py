@@ -137,6 +137,14 @@ def pytest_addoption(parser):
         metavar="UUID",
         help="Turn.io journey UUID to use (overrides TURN_JOURNEY_UUID env var; auto-enables --turn)",
     )
+    parser.addoption(
+        "--max-cases",
+        action="store",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Only run the first N test cases (by case order)",
+    )
 
 
 def pytest_configure(config):
@@ -510,6 +518,9 @@ def pytest_generate_tests(metafunc):
     """
     if 'test_scenario' in metafunc.fixturenames:
         scenarios = metafunc.config._scenarios
+        max_cases = metafunc.config.getoption("--max-cases")
+        if max_cases is not None:
+            scenarios = scenarios[:max_cases]
         metafunc.parametrize(
             'test_scenario',
             scenarios,

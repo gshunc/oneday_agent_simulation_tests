@@ -164,7 +164,8 @@ def oneday_judge_prompt(scenario_description: str, criteria: list[str]) -> str:
       - If the agent lists a followup blood pressure test in order to diagnose hypertension (HTN), and hypertension is one of the diagnoses, this counts as a pass.
       - If the diagnosis is something along the lines of a snakebite or severe discrete trauamatic events as such, and the diagnosis listed is something like snakebite, the user will often say something like "Summary:..." or will just list treatment without diagnostic framing since the diagnosis is so obvious. This counts as a diagnosis only in these cases.
       - When the diagnosis is "danger signs present..." in the case of a child patient, and the agent returns "danger signs present, please refer to the hospital immediately..." or something along those lines, this is a pass (at least for the danger sign portion of the diagnosis) unless there is an additional diagnosis present that the judge misses.
-      - If the diagnosis is heavily implied but not explicitly stated, but the correct treatment is given by the agent, this should be considered a pass.
+      - If the diagnosis is heavily implied but not explicitly stated i.e. the correct treatment is given by the agent, this should be considered a pass.
+      - There may be scenarios where the agent will not explicitly diagnose a disease but recommend followup even though the disease is listed as the diagnosis for the case. Example for hypertension, from the treatment section of the diagnosis: \"BP: Recheck BP in 3–7 days before diagnosing hypertension or starting HTN meds\". This should count as a pass."
       - The user's very first message will be a plain "Hello" with no symptom information. This is intentional and must NOT be treated as a failure to follow the script.
       </rules>
 
@@ -284,6 +285,7 @@ async def run_oneday_scenario(test_scenario: Scenario, testrun_uid: str, model_i
         "Turn 3+: Answer the agent's questions from your chart. Only provide what was asked. "
         "If the agent asks multiple questions, answer each one briefly. "
         "If something that the agent asks you isn't on the chart, and it's a yes or no question, assume the answer is no. If a reading like blood pressure or glucose is asked for but not listed in your chart, assume they are normal and report as such. Assume weight is normal for age range if not listed and report as such in kg.\n\n"
+        "NOTE: If the diagnosis agent asks you for an MRDT and you have a result for \"malaria test\", this is the result of an MRDT and should be reported as such in response. Example: [OneDay Agent] - \"Can you perform an MRDT now at the clinic?\" [You] - \"We have already completed an MRDT with a positive result\"."
         "## Style\n\n"
         "- Short WhatsApp-style messages. No bullet points, no structured formats.\n"
         "- Never suggest a diagnosis or ask the agent to do exams/tests.\n"

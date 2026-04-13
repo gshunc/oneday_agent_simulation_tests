@@ -61,19 +61,15 @@ def run_model_tests(model: str, results_dir: str, variant: str | None = None) ->
 
 def run_turn_tests(turn_uuid: str, results_dir: str, max_cases: int | None = None, variant: str = "diagnosis_only") -> int:
     """Run pytest for a single Turn.io journey UUID and return the exit code."""
-    if max_cases is not None:
-        case_ids = " or ".join(f"[case_{i}]" for i in range(1, max_cases + 1))
-        k_expr = f"{variant} and ({case_ids})"
-    else:
-        k_expr = variant
-
     cmd = [
         sys.executable, "-m", "pytest",
         "-n", "auto",
         "--turn-uuid", turn_uuid,
-        "-k", k_expr,
+        "-k", variant,
         "test_oneday_evaluation.py",
     ]
+    if max_cases is not None:
+        cmd += ["--max-cases", str(max_cases)]
 
     env = {**os.environ, "ONEDAY_RESULTS_DIR": results_dir}
 
